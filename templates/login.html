@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập - TIỆM TRÀ NHÀ BỐI</title>
+    <!-- Font chữ bo tròn siêu dễ thương -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #4CAF50; /* Xanh lá ếch con */
+            --primary-dark: #388E3C;
+            --accent-yellow: #FFCA28; /* Vàng nơ */
+            --bg-light: #F4FAF4; /* Nền xanh pastel cực nhạt */
+            --text-dark: #2C3E50;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            font-family: 'Nunito', sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: var(--text-dark);
+        }
+
+        .box {
+            width: 100%;
+            max-width: 420px;
+            background: white;
+            padding: 40px 30px;
+            border-radius: 35px;
+            box-shadow: 0 15px 35px rgba(76, 175, 80, 0.1);
+            text-align: center;
+            position: relative;
+            box-sizing: border-box;
+            margin: 20px;
+        }
+
+        /* Hình ảnh cậu bé ếch chèn trên cùng */
+        .mascot {
+            width: 130px;
+            height: auto;
+            margin-top: -80px; /* Kéo ảnh trồi lên trên khung */
+            margin-bottom: 10px;
+            border-radius: 50%;
+            background-color: white;
+            padding: 10px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        }
+
+        h1 {
+            color: var(--primary);
+            font-size: 28px;
+            font-weight: 900;
+            margin-top: 0;
+            margin-bottom: 5px;
+        }
+
+        p {
+            color: #7f8c8d;
+            font-weight: 600;
+            margin-bottom: 25px;
+            font-size: 15px;
+        }
+
+        input {
+            width: 100%;
+            padding: 15px 20px;
+            margin: 10px 0;
+            font-size: 16px;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 600;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            box-sizing: border-box;
+            background-color: #fafafa;
+            transition: all 0.3s;
+        }
+
+        input:focus {
+            border-color: var(--primary);
+            outline: none;
+            background-color: white;
+            box-shadow: 0 0 0 4px rgba(76, 175, 80, 0.1);
+        }
+
+        button {
+            width: 100%;
+            padding: 16px;
+            margin-top: 15px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            font-size: 18px;
+            font-weight: 900;
+            font-family: 'Nunito', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+        }
+
+        button:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(76, 175, 80, 0.4);
+        }
+
+        .login-link {
+            display: inline-block;
+            margin-top: 25px;
+            font-size: 16px;
+            font-weight: 700;
+            color: #7f8c8d;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .login-link span {
+            color: var(--primary);
+            font-weight: 800;
+        }
+
+        .login-link:hover span {
+            color: var(--accent-yellow);
+        }
+    </style>
+</head>
+<body>
+
+<div class="box">
+    <!-- Hình cậu bé ếch giống hệt trang Đăng ký -->
+    <img src="{{ url_for('static', filename='images/image_16e203.jpg') }}" alt="Cậu bé Tiệm Trà" class="mascot">
+    
+    <h1>TIỆM TRÀ NHÀ BỐI</h1>
+    <p>Chào mừng bạn trở lại! 🐸</p>
+
+    <!-- Form gửi dữ liệu đăng nhập -->
+    <form method="POST" action="/login">
+        <input type="text"
+               name="username"
+               placeholder="Tên đăng nhập"
+               required>
+
+        <input type="password"
+               name="password"
+               placeholder="Mật khẩu"
+               required>
+
+        <button type="submit">
+            Đăng nhập
+        </button>
+    </form>
+
+    <a href="/register" class="login-link">
+        Chưa có tài khoản? <span>Đăng ký ngay</span>
+    </a>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý đơn hàng - TIỆM TRÀ NHÀ BỐI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #4CAF50; 
+            --primary-dark: #388E3C;
+            --accent-yellow: #FFCA28; 
+            --bg-light: #F4FAF4; 
+            --text-dark: #2C3E50;
+        }
+
+        body { 
+            font-family: 'Nunito', sans-serif; 
+            background: var(--bg-light); 
+            color: var(--text-dark);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container { 
+            width: 100%; 
+            max-width: 1300px; 
+            margin: auto; 
+            background: white;
+            padding: 30px;
+            border-radius: 30px;
+            box-shadow: 0 10px 30px rgba(76, 175, 80, 0.1);
+            box-sizing: border-box;
+        }
+
+        .header-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        h1 { 
+            color: var(--primary); 
+            font-weight: 900;
+            margin: 0;
+            font-size: 28px;
+        }
+
+        .nav-btn {
+            text-decoration: none; 
+            color: white; 
+            background: var(--primary-dark);
+            font-weight: 800;
+            padding: 10px 20px;
+            border-radius: 15px;
+            transition: all 0.3s;
+        }
+
+        .nav-btn:hover { background: var(--primary); transform: translateY(-2px); }
+
+        /* --- THANH TÌM KIẾM & XUẤT CSV --- */
+        .toolbar {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .search-box {
+            flex: 1;
+            padding: 12px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .search-box:focus { border-color: var(--primary); }
+
+        .btn-export {
+            background-color: var(--accent-yellow);
+            color: var(--text-dark);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 15px;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 900;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-export:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(255, 202, 40, 0.3); }
+
+        /* --- BẢNG DỮ LIỆU --- */
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            background: white; 
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0,0,0,0.02);
+        }
+
+        th { 
+            background: var(--primary); 
+            color: white; 
+            padding: 15px; 
+            font-size: 15px; 
+            text-align: left; 
+            font-weight: 800;
+        }
+
+        td { 
+            padding: 15px; 
+            border-bottom: 1px solid #f0f0f0; 
+            font-size: 15px; 
+            font-weight: 600;
+        }
+
+        tr:hover { background-color: #f9f9f9; }
+
+        /* --- NÚT THAO TÁC TRONG BẢNG --- */
+        .btn { 
+            padding: 8px 15px; 
+            text-decoration: none; 
+            color: white; 
+            border-radius: 10px; 
+            font-size: 13px; 
+            font-weight: 800;
+            display: inline-block; 
+            margin: 2px; 
+            transition: all 0.2s;
+        }
+
+        .btn-complete { background-color: var(--primary); }
+        .btn-complete:hover { background-color: var(--primary-dark); transform: scale(1.05); }
+        
+        .btn-delete { background-color: #FF5252; }
+        .btn-delete:hover { background-color: #D32F2F; transform: scale(1.05); }
+
+        .status-pending { color: #FF9800; font-weight: 900; background: #FFF3E0; padding: 5px 10px; border-radius: 10px; }
+        .status-done { color: var(--primary-dark); font-weight: 900; background: #E8F5E9; padding: 5px 10px; border-radius: 10px; }
+        
+        .time-text { font-size: 13px; color: #7f8c8d; font-weight: 700; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header-actions">
+        <h1>📦 QUẢN LÝ ĐƠN HÀNG</h1>
+        <a href="/" class="nav-btn"><i class="fa-solid fa-house"></i> Về Trang chủ</a>
+    </div>
+    
+    <div class="toolbar">
+        <input type="text" id="searchInput" class="search-box" onkeyup="searchTable()" placeholder="🔍 Tìm kiếm theo Tên khách hàng hoặc Số điện thoại...">
+        <button onclick="exportTableToCSV('DonHang_NhaBoi.csv')" class="btn-export"><i class="fa-solid fa-file-csv"></i> Xuất file CSV</button>
+    </div>
+
+    <table id="orderTable">
+        <thead>
+            <tr>
+                <th>Mã</th>
+                <th>Thời gian ĐẶT</th>
+                <th>Thời gian NHẬN</th>
+                <th>Khách hàng</th>
+                <th>SĐT</th>
+                <th>Địa chỉ</th>
+                <th>Món</th>
+                <th>Giá</th>
+                <th>Trạng thái</th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            <tr>
+                <td style="color: var(--primary); font-weight: 900;">#{{ order[0] }}</td>
+                <td class="time-text">{{ order[8] if order[8] else "Trống" }}</td>
+                <td class="time-text" style="color: var(--primary-dark);">
+                    {{ order[9] if order[9] else "Chưa nhận" }}
+                </td>
+                <td>
+                    <b>{{ order[2] }}</b><br>
+                    <span style="font-size:12px; color:#888;">(User: {{ order[1] }})</span>
+                </td>
+                <td>{{ order[3] }}</td>
+                <td>{{ order[4] }}</td>
+                <td>{{ order[5] }}</td>
+                <td style="color:#FF5252; font-weight:900;">{{ "{:,}".format(order[6]) }}đ</td>
+                <td>
+                    {% if order[7] == 'Hoàn thành' %}
+                        <span class="status-done">Đã giao xong</span>
+                    {% else %}
+                        <span class="status-pending">Chờ xử lý</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if order[7] != 'Hoàn thành' %}
+                    <a href="/admin/complete/{{ order[0] }}" class="btn btn-complete" title="Đánh dấu hoàn thành">✔ Xong</a>
+                    {% endif %}
+                    <a href="/admin/delete/{{ order[0] }}" class="btn btn-delete" onclick="return confirm('Xóa vĩnh viễn đơn hàng #{{ order[0] }} này?');">Xóa</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+    // Hàm Tìm kiếm
+    function searchTable() {
+        var input, filter, table, tr, tdName, tdPhone, i, txtValueName, txtValuePhone;
+        input = document.getElementById("searchInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("orderTable");
+        tr = table.getElementsByTagName("tr");
+
+        for (i = 1; i < tr.length; i++) {
+            // Cột 3 là Khách hàng, Cột 4 là SĐT
+            tdName = tr[i].getElementsByTagName("td")[3];
+            tdPhone = tr[i].getElementsByTagName("td")[4];
+            
+            if (tdName || tdPhone) {
+                txtValueName = tdName.textContent || tdName.innerText;
+                txtValuePhone = tdPhone.textContent || tdPhone.innerText;
+                
+                if (txtValueName.toUpperCase().indexOf(filter) > -1 || txtValuePhone.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }       
+        }
+    }
+
+    // Hàm Xuất CSV
+    function downloadCSV(csv, filename) {
+        var csvFile;
+        var downloadLink;
+        // Thêm BOM để Excel đọc được tiếng Việt có dấu (UTF-8)
+        var BOM = "\uFEFF";
+        csvFile = new Blob([BOM + csv], {type: "text/csv;charset=utf-8;"});
+        downloadLink = document.createElement("a");
+        downloadLink.download = filename;
+        downloadLink.href = window.URL.createObjectURL(csvFile);
+        downloadLink.style.display = "none";
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+    }
+
+    function exportTableToCSV(filename) {
+        var csv = [];
+        var rows = document.querySelectorAll("table tr");
+        
+        for (var i = 0; i < rows.length; i++) {
+            var row = [], cols = rows[i].querySelectorAll("td, th");
+            // Bỏ qua cột cuối cùng (cột Thao tác) khi xuất file
+            for (var j = 0; j < cols.length - 1; j++) {
+                // Xóa bỏ khoảng trắng thừa và dấu xuống dòng
+                let text = cols[j].innerText.replace(/(\r\n|\n|\r)/gm, " ").trim();
+                row.push('"' + text + '"');
+            }
+            csv.push(row.join(","));
+        }
+        downloadCSV(csv.join("\n"), filename);
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang chủ - TIỆM TRÀ NHÀ BỐI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #4CAF50; 
+            --primary-dark: #388E3C;
+            --accent-yellow: #FFCA28; 
+            --accent-pink: #FF8A80; 
+            --bg-light: #F4FAF4; 
+            --text-dark: #2C3E50;
+            --white: #ffffff;
+        }
+
+        body {
+            margin: 0; padding: 0; font-family: 'Nunito', sans-serif;
+            background-color: var(--bg-light); color: var(--text-dark);
+        }
+
+        /* --- HEADER & NAVBAR --- */
+        header {
+            background-color: var(--white); box-shadow: 0 4px 15px rgba(76, 175, 80, 0.1);
+            position: sticky; top: 0; z-index: 1000; padding: 15px 5%;
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 3px solid var(--primary);
+        }
+
+        .logo { font-size: 28px; font-weight: 900; color: var(--primary); text-decoration: none; display: flex; align-items: center; gap: 10px; letter-spacing: 1px; }
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a { text-decoration: none; color: var(--text-dark); font-weight: 700; font-size: 17px; transition: color 0.3s; }
+        .nav-links a:hover { color: var(--primary); }
+        .user-actions { display: flex; align-items: center; gap: 25px; }
+        .cart-btn { position: relative; color: var(--primary); font-size: 24px; text-decoration: none; transition: transform 0.2s; }
+        .cart-btn:hover { transform: scale(1.15) rotate(-5deg); }
+        .cart-badge { position: absolute; top: -8px; right: -12px; background-color: var(--accent-pink); color: white; font-size: 13px; font-weight: 900; padding: 2px 7px; border-radius: 50%; border: 2px solid white; }
+        .auth-btn { padding: 10px 22px; background-color: var(--accent-yellow); color: var(--text-dark); text-decoration: none; border-radius: 20px; font-weight: 800; transition: all 0.3s; box-shadow: 0 4px 0px rgba(200, 150, 0, 0.2); }
+        .auth-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 0px rgba(200, 150, 0, 0.2); }
+        .user-greeting { font-weight: 800; color: var(--primary); }
+
+        /* --- HERO BANNER --- */
+        .hero { display: flex; align-items: center; justify-content: space-between; max-width: 1100px; margin: 40px auto; padding: 40px; background: linear-gradient(135deg, #ffffff 0%, #e8f5e9 100%); border-radius: 40px; box-shadow: 0 15px 30px rgba(0,0,0,0.05); }
+        .hero-text { flex: 1; padding-right: 40px; }
+        .hero-text h1 { font-size: 55px; font-weight: 900; color: var(--primary); margin-bottom: 10px; line-height: 1.2; }
+        .hero-text h1 span { color: var(--accent-pink); }
+        .hero-text p { font-size: 20px; color: #555; margin-bottom: 35px; font-weight: 600; line-height: 1.6; }
+        .btn-hero { display: inline-block; padding: 16px 40px; background-color: var(--primary); color: white; text-decoration: none; font-size: 20px; font-weight: 900; border-radius: 30px; transition: all 0.3s; box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4); }
+        .btn-hero:hover { background-color: var(--primary-dark); transform: translateY(-5px) scale(1.05); box-shadow: 0 8px 20px rgba(76, 175, 80, 0.6); }
+        .hero-img { flex: 1; text-align: center; position: relative; }
+        .hero-img img { width: 100%; max-width: 400px; border-radius: 30px; animation: float 4s ease-in-out infinite; }
+        @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-15px); } 100% { transform: translateY(0px); } }
+
+        /* --- PHẦN GIỚI THIỆU --- */
+        .about-section { background-color: var(--white); border-radius: 40px; padding: 50px 40px; text-align: center; box-shadow: 0 10px 30px rgba(76, 175, 80, 0.05); margin-bottom: 60px; }
+        .about-text { font-size: 18px; color: #555; line-height: 1.8; max-width: 800px; margin: 0 auto 40px auto; font-weight: 600; }
+        .features { display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; }
+        .feature-card { flex: 1; min-width: 250px; padding: 30px 20px; background: var(--bg-light); border-radius: 30px; transition: all 0.3s; border: 2px solid transparent; }
+        .feature-card:hover { transform: translateY(-10px); border: 2px solid var(--accent-yellow); box-shadow: 0 15px 25px rgba(255, 202, 40, 0.15); }
+        .feature-icon { font-size: 45px; color: var(--primary); margin-bottom: 15px; }
+        .feature-title { font-size: 22px; font-weight: 900; color: var(--text-dark); margin-bottom: 10px; }
+
+        /* --- SẢN PHẨM & CHỌN SIZE --- */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .section-title { text-align: center; font-size: 38px; color: var(--primary); margin-bottom: 50px; font-weight: 900; position: relative; }
+        .section-title::after { content: '🌸'; position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%); font-size: 24px; }
+        
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 35px; }
+        .product-card { background: var(--white); border-radius: 25px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.06); transition: all 0.3s ease; display: flex; flex-direction: column; border: 2px solid transparent; }
+        .product-card:hover { transform: translateY(-10px); border: 2px solid var(--accent-yellow); box-shadow: 0 15px 30px rgba(255, 202, 40, 0.2); }
+        
+        .img-container { width: 100%; height: 230px; overflow: hidden; background-color: #ffebee; display: flex; justify-content: center; align-items: center; }
+        .product-img { width: 100%; height: 100%; object-fit: cover; cursor: pointer; transition: opacity 0.3s ease-in-out; }
+        .product-img:hover { opacity: 0.8; }
+
+        .product-info { padding: 20px; display: flex; flex-direction: column; flex-grow: 1; align-items: center; text-align: center; }
+        .product-category { font-size: 13px; color: var(--primary-dark); background-color: #e8f5e9; padding: 5px 12px; border-radius: 15px; margin-bottom: 10px; font-weight: 800; }
+        .product-title { font-size: 20px; margin: 0 0 15px 0; color: var(--text-dark); font-weight: 800; }
+        
+        /* CSS Thanh chọn Size */
+        .size-selector { display: flex; justify-content: center; gap: 5px; margin-bottom: 15px; width: 100%; flex-wrap: wrap; }
+        .size-btn { padding: 6px 10px; font-size: 13px; font-weight: 800; font-family: 'Nunito', sans-serif; border: 2px solid #eee; background: white; border-radius: 12px; cursor: pointer; transition: all 0.2s; color: #7f8c8d; }
+        .size-btn:hover { border-color: var(--primary); color: var(--primary); }
+        .size-btn.active { border-color: var(--primary); background: var(--primary); color: white; transform: scale(1.05); }
+
+        .product-price { font-size: 22px; color: var(--accent-pink); font-weight: 900; margin-bottom: 20px; margin-top: auto; transition: color 0.3s; }
+        
+        .btn-add-cart { width: 100%; padding: 12px; background-color: var(--primary); color: white; border: none; border-radius: 20px; font-size: 16px; font-weight: 900; cursor: pointer; transition: all 0.3s; text-decoration: none; display: block; }
+        .btn-add-cart:hover { background-color: var(--accent-yellow); color: var(--text-dark); transform: scale(1.05); }
+
+        /* --- FOOTER --- */
+        footer { background-color: var(--primary); color: white; text-align: center; padding: 40px 20px; margin-top: 80px; border-top-left-radius: 40px; border-top-right-radius: 40px; }
+        footer h2 { font-size: 28px; font-weight: 900; margin-bottom: 10px; color: var(--accent-yellow); }
+
+        /* --- HỘP THOẠI XEM ẢNH (MODAL / LIGHTBOX) --- */
+        .image-modal-overlay { display: none; position: fixed; z-index: 2000; padding-top: 50px; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px); justify-content: center; align-items: center; }
+        .image-modal-content { margin: auto; display: block; max-width: 90%; max-height: 85vh; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); animation: zoomIn 0.3s ease; }
+        @keyframes zoomIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .image-modal-close { position: absolute; top: 20px; right: 40px; color: #f1f1f1; font-size: 50px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .image-modal-close:hover { color: var(--accent-yellow); transform: scale(1.1); }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="/" class="logo"><i class="fa-solid fa-frog"></i> NHÀ BỐI</a>
+        <div class="nav-links">
+            <a href="/">Trang chủ</a> <a href="#about">Giới thiệu</a> <a href="#menu">Thực đơn</a>
+            {% if session.get('user') == 'admin' %} <a href="/admin" style="color: var(--accent-pink);">Quản trị</a> {% endif %}
+        </div>
+        <div class="user-actions">
+            <a href="/cart" class="cart-btn">
+                <i class="fa-solid fa-basket-shopping"></i>
+                {% set cart_count = session.get('cart', []) | length %}
+                <span class="cart-badge">{{ cart_count }}</span>
+            </a>
+            {% if session.get('user') %}
+                <span class="user-greeting">Chào {{ session['user'] }}! 🐸</span>
+                <a href="/logout" class="auth-btn" style="background-color: #FF8A80; color: white;">Thoát</a>
+            {% else %}
+                <a href="/login" class="auth-btn">Đăng nhập</a>
+            {% endif %}
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="hero-text">
+            <h1>TIỆM TRÀ <br><span>NHÀ BỐI</span></h1>
+            <p>Ngọt ngào, tươi mát và đáng yêu như chính nụ cười của bạn. Khám phá menu siêu ngon của chúng mình nhé!</p>
+            <a href="#menu" class="btn-hero"><i class="fa-solid fa-mug-hot"></i> Đặt Nước Ngay</a>
+        </div>
+        <div class="hero-img">
+            <img src="{{ url_for('static', filename='images/image_16e203.jpg') }}" alt="Cậu bé Tiệm Trà">
+        </div>
+    </section>
+
+    <div class="container about-section" id="about">
+        <h2 class="section-title">VỀ CHÚNG MÌNH</h2>
+        <p class="about-text">Tiệm Trà Nhà Bối phục vụ từ <b>8g30 sáng đến 21g00 tối</b> mỗi ngày và luôn sẵn sàng <b>ship tận nơi</b> để mang trọn niềm vui đến cho bạn! 🐸💚</p>
+        <div class="features">
+            <div class="feature-card"><div class="feature-icon"><i class="fa-solid fa-leaf"></i></div><div class="feature-title">100% Tươi Sạch</div></div>
+            <div class="feature-card"><div class="feature-icon"><i class="fa-regular fa-clock"></i></div><div class="feature-title">Mở Cửa 8g30 - 21g</div></div>
+            <div class="feature-card"><div class="feature-icon"><i class="fa-solid fa-motorcycle"></i></div><div class="feature-title">Ship Tận Nơi</div></div>
+        </div>
+    </div>
+
+    <div class="container" id="menu">
+        <h2 class="section-title">THỰC ĐƠN HÔM NAY</h2>
+        
+        <div class="product-grid">
+            {% for p in products %}
+            <div class="product-card">
+                
+                <div class="img-container">
+                    <img src="{{ url_for('static', filename='images/' + p[4]) }}" 
+                         id="img-{{ p[0] }}" 
+                         alt="{{ p[1] }}" class="product-img" onclick="openModal(this.src)" title="Bấm để xem ảnh lớn">
+                </div>
+                
+                <div class="product-info">
+                    <span class="product-category">{{ p[3] }}</span>
+                    <h3 class="product-title">{{ p[1] }}</h3>
+                    
+                    <div class="size-selector">
+                        
+                        {% if p[3] == 'Trà sữa' or p[3] == 'Latte' %}
+                            <button class="size-btn active" onclick="changeSizeAndPrice(this, {{ p[0] }})" data-size="500ml" data-price="{{ p[2] }}" data-img="{{ url_for('static', filename='images/' + p[4]) }}">500ml</button>
+                            
+                            <button class="size-btn" onclick="changeSizeAndPrice(this, {{ p[0] }})" data-size="700ml" data-price="{{ p[2] + 7000 }}" data-img="{{ url_for('static', filename='images/image_15fd26.jpg') }}">700ml</button>
+                            
+                            <button class="size-btn" onclick="changeSizeAndPrice(this, {{ p[0] }})" data-size="1 Lít" data-price="{{ p[2] + 12000 }}" data-img="{{ url_for('static', filename='images/image_15f907.jpg') }}">1 Lít</button>
+
+                        {% elif p[3] == 'Trà' or p[3] == 'Trà trái cây' %}
+                            <button class="size-btn active" onclick="changeSizeAndPrice(this, {{ p[0] }})" data-size="500ml" data-price="{{ p[2] }}" data-img="{{ url_for('static', filename='images/' + p[4]) }}">500ml</button>
+                            
+                            <button class="size-btn" onclick="changeSizeAndPrice(this, {{ p[0] }})" data-size="700ml" data-price="{{ p[2] + 5000 }}" data-img="{{ url_for('static', filename='images/image_15f9a0.jpg') }}">700ml</button>
+                            
+                            <button class="size-btn" onclick="changeSizeAndPrice(this, {{ p[0] }})" data-size="1 Lít" data-price="{{ p[2] + 10000 }}" data-img="{{ url_for('static', filename='images/image_15f95e.jpg') }}">1 Lít</button>
+                            
+                            <button class="size-btn" onclick="changeSizeAndPrice(this, {{ p[0] }})" data-size="1.2 Lít" data-price="{{ p[2] + 15000 }}" data-img="{{ url_for('static', filename='images/image_15f8e8.jpg') }}">1.2 Lít</button>
+
+                        {% elif p[3] == 'Ăn vặt' %}
+                            <button class="size-btn active" onclick="changeSizeAndPrice(this, {{ p[0] }})" data-size="Phần Vừa" data-price="{{ p[2] }}" data-img="{{ url_for('static', filename='images/' + p[4]) }}">Phần Vừa</button>
+                            
+                            <button class="size-btn" onclick="changeSizeAndPrice(this, {{ p[0] }})" data-size="Phần Lớn" data-price="{{ p[2] + 20000 }}" data-img="{{ url_for('static', filename='images/image_16e203.jpg') }}">Phần Lớn</button>
+
+                        {% else %}
+                            <button class="size-btn active" onclick="changeSizeAndPrice(this, {{ p[0] }})" data-size="Size M" data-price="{{ p[2] }}" data-img="{{ url_for('static', filename='images/' + p[4]) }}">Size M</button>
+                            
+                            <button class="size-btn" onclick="changeSizeAndPrice(this, {{ p[0] }})" data-size="Size L" data-price="{{ p[2] + 5000 }}" data-img="{{ url_for('static', filename='images/image_15f964.jpg') }}">Size L</button>
+                        {% endif %}
+                        
+                    </div>
+
+                    <div class="product-price" id="price-{{ p[0] }}">
+                        {{ "{:,}".format(p[2]) }}đ
+                    </div>
+                    
+                    {% if p[3] == 'Ăn vặt' %}
+                        <a href="/add/{{ p[0] }}?size=Phần Vừa&price={{ p[2] }}" id="add-btn-{{ p[0] }}" class="btn-add-cart">Thêm vào giỏ</a>
+                    {% elif p[3] == 'Sữa chua' or p[3] == 'Đá bào' %}
+                        <a href="/add/{{ p[0] }}?size=Size M&price={{ p[2] }}" id="add-btn-{{ p[0] }}" class="btn-add-cart">Thêm vào giỏ</a>
+                    {% else %}
+                        <a href="/add/{{ p[0] }}?size=500ml&price={{ p[2] }}" id="add-btn-{{ p[0] }}" class="btn-add-cart">Thêm vào giỏ</a>
+                    {% endif %}
+
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <footer>
+        <h2>TIỆM TRÀ NHÀ BỐI</h2>
+        <p>Phục vụ bằng cả trái tim 💚</p>
+        <p>&copy; 2026 Bản quyền thuộc về Tiệm Trà Nhà Bối.</p>
+    </footer>
+
+    <div id="myImageModal" class="image-modal-overlay" onclick="closeModal()">
+        <span class="image-modal-close" onclick="closeModal()">&times;</span>
+        <img class="image-modal-content" id="expandedImg">
+    </div>
+
+    <script>
+        // HÀM CLICK CHỌN SIZE: THAY ĐỔI ẢNH, GIÁ BÁN, VÀ LINK ĐẶT HÀNG
+        function changeSizeAndPrice(btnElement, productId) {
+            // 1. Thay đổi trạng thái màu sắc của nút kích hoạt
+            let container = btnElement.parentElement;
+            let buttons = container.querySelectorAll('.size-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            btnElement.classList.add('active');
+
+            // 2. Đọc trực tiếp các giá trị tùy chỉnh từ thẻ HTML vừa bấm
+            let exactPrice = parseInt(btnElement.getAttribute('data-price')); 
+            let newImgSrc = btnElement.getAttribute('data-img'); 
+            let sizeName = btnElement.getAttribute('data-size'); 
+
+            // 3. Đổi hình ảnh sản phẩm tương ứng với size đã chọn (Có hiệu ứng mờ nhẹ khi đổi)
+            let imgEl = document.getElementById('img-' + productId);
+            imgEl.style.opacity = 0.4;
+            setTimeout(() => {
+                imgEl.src = newImgSrc;
+                imgEl.style.opacity = 1;
+            }, 120);
+
+            // 4. Cập nhật lại số tiền hiển thị trên màn hình
+            let priceEl = document.getElementById('price-' + productId);
+            priceEl.innerHTML = exactPrice.toLocaleString('vi-VN') + 'đ';
+            priceEl.style.color = '#FFCA28';
+            setTimeout(() => { priceEl.style.color = 'var(--accent-pink)'; }, 300);
+
+            // 5. Đồng bộ cấu trúc đường dẫn mới gửi về file app.py để bỏ vào giỏ hàng
+            let addBtn = document.getElementById('add-btn-' + productId);
+            addBtn.href = `/add/${productId}?size=${sizeName}&price=${exactPrice}`;
+        }
+
+        // HÀM MỞ VÀ ĐÓNG ẢNH PHÓNG TO KHI NHẤN CHUỘT VÀO HÌNH
+        function openModal(imageSrc) {
+            var modal = document.getElementById("myImageModal");
+            var expandedImg = document.getElementById("expandedImg");
+            expandedImg.src = imageSrc;
+            modal.style.display = "flex";
+            document.body.style.overflow = "hidden";
+        }
+
+        function closeModal() {
+            var modal = document.getElementById("myImageModal");
+            modal.style.display = "none";
+            document.body.style.overflow = "auto";
+        }
+    </script>
+
+</body>
+</html>
