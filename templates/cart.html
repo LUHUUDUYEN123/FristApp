@@ -119,7 +119,7 @@
             </tr>
             {% for item in cart %}
             <tr>
-                <td>{{ item.name }}</td>
+                <td>{{ item.name }}{% if item.get('size') %}<br><span style="font-size: 12px; color: #999;">({{ item.size }})</span>{% endif %}</td>
                 <td style="text-align: right; color: var(--primary-dark);">{{ "{:,}".format(item.price) }}đ</td>
                 <td style="text-align: center;">
                     <!-- Nút xóa món dựa vào vị trí của nó (loop.index0) trong giỏ hàng -->
@@ -211,22 +211,55 @@
     }
 
     function handleCheckout(event) {
+        event.preventDefault();
+        
+        // Lấy và validate dữ liệu
+        var fullName = document.querySelector('input[name="full_name"]').value.trim();
+        var phone = document.querySelector('input[name="phone"]').value.trim();
+        var address = document.querySelector('textarea[name="address"]').value.trim();
         var method = document.querySelector('input[name="payment_method"]:checked').value;
+        
+        // Kiểm tra không trống
+        if (!fullName) {
+            alert('❌ Vui lòng nhập họ và tên!');
+            return false;
+        }
+        
+        if (!phone) {
+            alert('❌ Vui lòng nhập số điện thoại!');
+            return false;
+        }
+        
+        // Validate số điện thoại (10-11 chữ số)
+        if (!/^[0-9]{10,11}$/.test(phone.replace(/[\s\-\(\)]/g, ''))) {
+            alert('❌ Số điện thoại không hợp lệ!\nVui lòng nhập 10-11 chữ số.');
+            return false;
+        }
+        
+        if (!address) {
+            alert('❌ Vui lòng nhập địa chỉ giao hàng!');
+            return false;
+        }
+        
+        if (address.length < 10) {
+            alert('❌ Địa chỉ quá ngắn, vui lòng chi tiết hơn!');
+            return false;
+        }
         
         if (method === "transfer") {
             // Chặn form lại, bật hộp thoại QR lên yêu cầu khách chuyển tiền
-            event.preventDefault(); 
             document.getElementById("transferModal").style.display = "flex";
             return false;
         } else {
             // Thanh toán tiền mặt thì gửi đi luôn
-            alert("🐸 BỐI XIN CẢM ƠN!\nĐơn hàng của bạn đã được ghi nhận và sẽ giao sớm nhất.");
-            return true; 
+            document.getElementById("checkoutForm").submit();
+            return false;
         }
     }
 
     function confirmTransfer() {
-        alert("🐸 BỐI XIN CẢM ƠN QUÝ KHÁCH!\nHệ thống đang xử lý đơn hàng đã thanh toán của bạn.");
+        document.getElementById("transferModal").style.display = "none";
+        alert("🐸 BỐI XIN CẢM ƠN QUÝ KHÁCH!\nHệ thống đang xử lý đơn hàng của bạn.");
         // Gửi form đi thực sự sau khi khách xác nhận đã chuyển tiền
         document.getElementById("checkoutForm").submit();
     }
@@ -234,6 +267,14 @@
     function closeModal() {
         document.getElementById("transferModal").style.display = "none";
     }
+    
+    // Đóng modal khi click ngoài
+    document.addEventListener('click', function(e) {
+        var modal = document.getElementById('transferModal');
+        if (e.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
 </script>
 
 </body>

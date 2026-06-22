@@ -210,35 +210,55 @@
                     <a href="/admin/delete/{{ order[0] }}" class="btn btn-delete" onclick="return confirm('Xóa vĩnh viễn đơn hàng #{{ order[0] }} này?');">Xóa</a>
                 </td>
             </tr>
+            {% else %}
+            <tr>
+                <td colspan="10" style="text-align: center; padding: 40px; color: #999; font-weight: 600;">
+                    🐸 Chưa có đơn hàng nào! Quán còn yên tĩnh quá nhỉ...
+                </td>
+            </tr>
             {% endfor %}
         </tbody>
     </table>
 </div>
 
 <script>
-    // Hàm Tìm kiếm
+    // Hàm Tìm kiếm - cải thiện hỗ trợ Vietnamese
     function searchTable() {
-        var input, filter, table, tr, tdName, tdPhone, i, txtValueName, txtValuePhone;
-        input = document.getElementById("searchInput");
-        filter = input.value.toUpperCase();
-        table = document.getElementById("orderTable");
-        tr = table.getElementsByTagName("tr");
+        var input = document.getElementById("searchInput");
+        var filter = input.value.toLowerCase();
+        var table = document.getElementById("orderTable");
+        var tr = table.getElementsByTagName("tr");
+        var visibleCount = 0;
 
-        for (i = 1; i < tr.length; i++) {
-            // Cột 3 là Khách hàng, Cột 4 là SĐT
-            tdName = tr[i].getElementsByTagName("td")[3];
-            tdPhone = tr[i].getElementsByTagName("td")[4];
+        for (var i = 1; i < tr.length; i++) {
+            var tdName = tr[i].getElementsByTagName("td")[3];
+            var tdPhone = tr[i].getElementsByTagName("td")[4];
             
-            if (tdName || tdPhone) {
-                txtValueName = tdName.textContent || tdName.innerText;
-                txtValuePhone = tdPhone.textContent || tdPhone.innerText;
+            if (tdName && tdPhone) {
+                var txtValueName = (tdName.textContent || tdName.innerText).toLowerCase();
+                var txtValuePhone = (tdPhone.textContent || tdPhone.innerText).toLowerCase();
                 
-                if (txtValueName.toUpperCase().indexOf(filter) > -1 || txtValuePhone.toUpperCase().indexOf(filter) > -1) {
+                if (txtValueName.indexOf(filter) > -1 || txtValuePhone.indexOf(filter) > -1) {
                     tr[i].style.display = "";
+                    visibleCount++;
                 } else {
                     tr[i].style.display = "none";
                 }
             }       
+        }
+        
+        // Hiển thị thông báo nếu không tìm thấy
+        var noResult = document.getElementById("noResult");
+        if (visibleCount === 0) {
+            if (!noResult) {
+                noResult = document.createElement("tr");
+                noResult.id = "noResult";
+                noResult.innerHTML = '<td colspan="10" style="text-align: center; color: #999; padding: 30px;">😅 Không tìm thấy đơn hàng nào!</td>';
+                table.getElementsByTagName("tbody")[0].appendChild(noResult);
+            }
+            noResult.style.display = "";
+        } else if (noResult) {
+            noResult.style.display = "none";
         }
     }
 

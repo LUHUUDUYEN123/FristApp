@@ -139,6 +139,12 @@
     <h1>TIỆM TRÀ NHÀ BỐI</h1>
     <p>Đăng ký thành viên mới 🐸</p>
 
+    {% if error %}
+    <div style="background-color: #ffebee; color: #c62828; padding: 15px; border-radius: 15px; margin-bottom: 20px; font-weight: 700; border-left: 4px solid #c62828;">
+        {{ error }}
+    </div>
+    {% endif %}
+
     <!-- Thêm id="regForm" để kiểm tra mật khẩu bằng Javascript -->
     <form method="POST" action="/register" id="regForm">
         <input type="text"

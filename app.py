@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, session
 import sqlite3
 from datetime import datetime
+import re
 
 app = Flask(__name__)
 app.secret_key = "nhaboi123"
@@ -127,26 +128,47 @@ def home():
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
-        username = request.form["username"]
-        password = request.form["password"]
+        username = request.form.get("username", "").strip()
+        password = request.form.get("password", "").strip()
+        
+        # Validation
+        if not username or not password:
+            return render_template("register.html", error="❌ Vui lòng điền đầy đủ thông tin")
+        
+        if len(username) < 3:
+            return render_template("register.html", error="❌ Tên đăng nhập phải ít nhất 3 ký tự")
+        
+        if len(password) < 4:
+            return render_template("register.html", error="❌ Mật khẩu phải ít nhất 4 ký tự")
+        
+        if not re.match("^[a-zA-Z0-9_.-]+$", username):
+            return render_template("register.html", error="❌ Tên đăng nhập chỉ chứa chữ, số, _, ., -")
+        
         conn = sqlite3.connect("database.db")
         c = conn.cursor()
         try:
             c.execute("INSERT INTO users(username,password) VALUES (?,?)", (username, password))
             conn.commit()
-        except:
             conn.close()
-            return "Tên đăng nhập đã tồn tại"
-        conn.close()
-        return redirect("/login")
+            return redirect("/login")
+        except sqlite3.IntegrityError:
+            conn.close()
+            return render_template("register.html", error="❌ Tên đăng nhập đã tồn tại")
+        except Exception as e:
+            conn.close()
+            return render_template("register.html", error="❌ Lỗi hệ thống, vui lòng thử lại")
     return render_template("register.html")
 
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
-        username = request.form["username"]
-        password = request.form["password"]
+        username = request.form.get("username", "").strip()
+        password = request.form.get("password", "").strip()
+        
+        if not username or not password:
+            return render_template("login.html", error="❌ Vui lòng nhập tài khoản và mật khẩu")
+        
         conn = sqlite3.connect("database.db")
         c = conn.cursor()
         c.execute("SELECT * FROM users WHERE username=? AND password=?", (username, password))
@@ -155,7 +177,7 @@ def login():
         if user:
             session["user"] = username
             return redirect("/")
-        return "Sai tài khoản hoặc mật khẩu"
+        return render_template("login.html", error="❌ Sai tài khoản hoặc mật khẩu")
     return render_template("login.html")
 
 
@@ -167,15 +189,52 @@ def logout():
 
 @app.route("/add/<int:id>")
 def add(id):
-    if "user" not in session: return redirect("/login")
+    if "user" not in session: 
+        return redirect("/login")
+    
     conn = sqlite3.connect("database.db")
     c = conn.cursor()
     c.execute("SELECT * FROM products WHERE id=?", (id,))
     product = c.fetchone()
     conn.close()
-    if "cart" not in session: session["cart"] = []
+    
+    if not product:
+        return redirect("/")
+    
+    # Get size and price from URL (for reference), but recalculate price based on base price + size markup
+    size = request.args.get("size", "500ml")
+    
+    # Base price from database
+    base_price = product[2]
+    
+    # Calculate final price based on size (same logic as frontend)
+    category = product[3]
+    final_price = base_price
+    
+    if category in ["Trà sữa", "Latte"]:
+        if size == "700ml":
+            final_price = base_price + 7000
+        elif size == "1 Lít":
+            final_price = base_price + 12000
+    elif category in ["Trà", "Trà trái cây"]:
+        if size == "700ml":
+            final_price = base_price + 5000
+        elif size == "1 Lít":
+            final_price = base_price + 10000
+        elif size == "1.2 Lít":
+            final_price = base_price + 15000
+    elif category == "Ăn vặt":
+        if size == "Phần Lớn":
+            final_price = base_price + 20000
+    else:
+        if size == "Size L":
+            final_price = base_price + 5000
+    
+    if "cart" not in session: 
+        session["cart"] = []
+    
     cart = session["cart"]
-    cart.append({"name": product[1], "price": product[2]})
+    cart.append({"name": product[1], "price": final_price, "size": size})
     session["cart"] = cart
     return redirect("/")
 
@@ -203,26 +262,48 @@ def cart():
 
 @app.route("/checkout", methods=["POST"])
 def checkout():
-    if "user" not in session: return redirect("/login")
-    full_name = request.form["full_name"]
-    phone = request.form["phone"]
-    address = request.form["address"]
+    if "user" not in session: 
+        return redirect("/login")
+    
+    full_name = request.form.get("full_name", "").strip()
+    phone = request.form.get("phone", "").strip()
+    address = request.form.get("address", "").strip()
     cart = session.get("cart", [])
+    
+    # Validation
+    if not full_name or not phone or not address:
+        return "<h1>❌ Lỗi: Vui lòng điền đầy đủ thông tin</h1><a href='/cart'>Quay lại giỏ hàng</a>"
+    
+    # Validate phone (10-11 digits)
+    if not re.match(r"^[0-9]{10,11}$", phone.replace(" ", "").replace("-", "")):
+        return "<h1>❌ Lỗi: Số điện thoại không hợp lệ (phải 10-11 chữ số)</h1><a href='/cart'>Quay lại giỏ hàng</a>"
+    
+    # Validate address (at least 10 characters)
+    if len(address) < 10:
+        return "<h1>❌ Lỗi: Địa chỉ quá ngắn, vui lòng chi tiết hơn</h1><a href='/cart'>Quay lại giỏ hàng</a>"
+    
+    if not cart:
+        return "<h1>❌ Lỗi: Giỏ hàng trống!</h1><a href='/'>Về trang chủ</a>"
     
     now = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
 
     conn = sqlite3.connect("database.db")
     c = conn.cursor()
-    for item in cart:
-        c.execute("""
-        INSERT INTO orders(username, full_name, phone, address, product_name, price, status, created_at)
-        VALUES (?,?,?,?,?,?,?,?)
-        """, (session["user"], full_name, phone, address, item["name"], item["price"], "Chờ xử lý", now))
-    
-    conn.commit()
-    conn.close()
-    session["cart"] = []
-    return "<h1>Đặt hàng thành công 🎉</h1><a href='/'>Quay về trang chủ</a>"
+    try:
+        for item in cart:
+            c.execute("""
+            INSERT INTO orders(username, full_name, phone, address, product_name, price, status, created_at)
+            VALUES (?,?,?,?,?,?,?,?)
+            """, (session["user"], full_name, phone, address, item["name"], item["price"], "Chờ xử lý", now))
+        
+        conn.commit()
+        session["cart"] = []
+        return "<h1>✅ Đặt hàng thành công 🎉</h1><p>Cảm ơn bạn đã order, tiệm sẽ liên hệ bạn sớm nhất!</p><a href='/'>Quay về trang chủ</a>"
+    except Exception as e:
+        conn.rollback()
+        return f"<h1>❌ Lỗi: Không thể lưu đơn hàng</h1><a href='/cart'>Thử lại</a>"
+    finally:
+        conn.close()
 
 
 # ==========================

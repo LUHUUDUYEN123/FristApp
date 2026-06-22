@@ -1,0 +1,134 @@
+/* Mobile Responsive Improvements */
+
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        gap: 15px;
+        padding: 10px 15px !important;
+    }
+
+    .nav-links {
+        gap: 15px;
+    }
+
+    .nav-links a {
+        font-size: 14px;
+    }
+
+    .user-actions {
+        gap: 15px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .hero {
+        flex-direction: column;
+        margin: 20px auto !important;
+        padding: 20px !important;
+    }
+
+    .hero-text {
+        padding-right: 0 !important;
+        text-align: center;
+    }
+
+    .hero-text h1 {
+        font-size: 36px;
+    }
+
+    .hero-text p {
+        font-size: 16px;
+    }
+
+    .product-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)) !important;
+        gap: 20px !important;
+    }
+
+    .product-card {
+        border-radius: 15px;
+    }
+
+    .size-selector {
+        flex-wrap: wrap;
+        gap: 3px;
+    }
+
+    .size-btn {
+        padding: 5px 8px;
+        font-size: 11px;
+    }
+
+    .modal-content {
+        width: 90%;
+        padding: 25px;
+    }
+
+    table {
+        font-size: 12px;
+    }
+
+    td, th {
+        padding: 10px;
+        word-break: break-word;
+    }
+
+    .btn {
+        padding: 6px 10px;
+        font-size: 11px;
+    }
+
+    .container {
+        flex-direction: column;
+    }
+
+    .left, .right {
+        flex: 1 !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-text h1 {
+        font-size: 28px;
+    }
+
+    .product-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    .modal-content img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    button {
+        font-size: 16px;
+    }
+
+    input, textarea {
+        font-size: 16px;
+    }
+}
+
+/* Accessibility - Focus states */
+button:focus,
+input:focus,
+textarea:focus,
+a:focus {
+    outline: 2px solid #4CAF50;
+    outline-offset: 2px;
+}
+
+/* Smooth scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Animation improvements */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}

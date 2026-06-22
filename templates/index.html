@@ -165,33 +165,33 @@
                     <span class="product-category">{{ p[3] }}</span>
                     <h3 class="product-title">{{ p[1] }}</h3>
                     
-                    <div class="size-selector">
+                    <div class="size-selector" data-product-id="{{ p[0] }}">
                         
                         {% if p[3] == 'Trà sữa' or p[3] == 'Latte' %}
-                            <button class="size-btn active" onclick="changeSizeAndPrice(this, {{ p[0] }})" data-size="500ml" data-price="{{ p[2] }}" data-img="{{ url_for('static', filename='images/' + p[4]) }}">500ml</button>
+                            <button class="size-btn active" data-size="500ml" data-price="{{ p[2] }}" data-img="{{ url_for('static', filename='images/' + p[4]) }}">500ml</button>
                             
-                            <button class="size-btn" onclick="changeSizeAndPrice(this, {{ p[0] }})" data-size="700ml" data-price="{{ p[2] + 7000 }}" data-img="{{ url_for('static', filename='images/image_15fd26.jpg') }}">700ml</button>
+                            <button class="size-btn" data-size="700ml" data-price="{{ p[2] + 7000 }}" data-img="{{ url_for('static', filename='images/image_15fd26.jpg') }}">700ml</button>
                             
-                            <button class="size-btn" onclick="changeSizeAndPrice(this, {{ p[0] }})" data-size="1 Lít" data-price="{{ p[2] + 12000 }}" data-img="{{ url_for('static', filename='images/image_15f907.jpg') }}">1 Lít</button>
+                            <button class="size-btn" data-size="1 Lít" data-price="{{ p[2] + 12000 }}" data-img="{{ url_for('static', filename='images/image_15f907.jpg') }}">1 Lít</button>
 
                         {% elif p[3] == 'Trà' or p[3] == 'Trà trái cây' %}
-                            <button class="size-btn active" onclick="changeSizeAndPrice(this, {{ p[0] }})" data-size="500ml" data-price="{{ p[2] }}" data-img="{{ url_for('static', filename='images/' + p[4]) }}">500ml</button>
+                            <button class="size-btn active" data-size="500ml" data-price="{{ p[2] }}" data-img="{{ url_for('static', filename='images/' + p[4]) }}">500ml</button>
                             
-                            <button class="size-btn" onclick="changeSizeAndPrice(this, {{ p[0] }})" data-size="700ml" data-price="{{ p[2] + 5000 }}" data-img="{{ url_for('static', filename='images/image_15f9a0.jpg') }}">700ml</button>
+                            <button class="size-btn" data-size="700ml" data-price="{{ p[2] + 5000 }}" data-img="{{ url_for('static', filename='images/image_15f9a0.jpg') }}">700ml</button>
                             
-                            <button class="size-btn" onclick="changeSizeAndPrice(this, {{ p[0] }})" data-size="1 Lít" data-price="{{ p[2] + 10000 }}" data-img="{{ url_for('static', filename='images/image_15f95e.jpg') }}">1 Lít</button>
+                            <button class="size-btn" data-size="1 Lít" data-price="{{ p[2] + 10000 }}" data-img="{{ url_for('static', filename='images/image_15f95e.jpg') }}">1 Lít</button>
                             
-                            <button class="size-btn" onclick="changeSizeAndPrice(this, {{ p[0] }})" data-size="1.2 Lít" data-price="{{ p[2] + 15000 }}" data-img="{{ url_for('static', filename='images/image_15f8e8.jpg') }}">1.2 Lít</button>
+                            <button class="size-btn" data-size="1.2 Lít" data-price="{{ p[2] + 15000 }}" data-img="{{ url_for('static', filename='images/image_15f8e8.jpg') }}">1.2 Lít</button>
 
                         {% elif p[3] == 'Ăn vặt' %}
-                            <button class="size-btn active" onclick="changeSizeAndPrice(this, {{ p[0] }})" data-size="Phần Vừa" data-price="{{ p[2] }}" data-img="{{ url_for('static', filename='images/' + p[4]) }}">Phần Vừa</button>
+                            <button class="size-btn active" data-size="Phần Vừa" data-price="{{ p[2] }}" data-img="{{ url_for('static', filename='images/' + p[4]) }}">Phần Vừa</button>
                             
-                            <button class="size-btn" onclick="changeSizeAndPrice(this, {{ p[0] }})" data-size="Phần Lớn" data-price="{{ p[2] + 20000 }}" data-img="{{ url_for('static', filename='images/image_16e203.jpg') }}">Phần Lớn</button>
+                            <button class="size-btn" data-size="Phần Lớn" data-price="{{ p[2] + 20000 }}" data-img="{{ url_for('static', filename='images/image_16e203.jpg') }}">Phần Lớn</button>
 
                         {% else %}
-                            <button class="size-btn active" onclick="changeSizeAndPrice(this, {{ p[0] }})" data-size="Size M" data-price="{{ p[2] }}" data-img="{{ url_for('static', filename='images/' + p[4]) }}">Size M</button>
+                            <button class="size-btn active" data-size="Size M" data-price="{{ p[2] }}" data-img="{{ url_for('static', filename='images/' + p[4]) }}">Size M</button>
                             
-                            <button class="size-btn" onclick="changeSizeAndPrice(this, {{ p[0] }})" data-size="Size L" data-price="{{ p[2] + 5000 }}" data-img="{{ url_for('static', filename='images/image_15f964.jpg') }}">Size L</button>
+                            <button class="size-btn" data-size="Size L" data-price="{{ p[2] + 5000 }}" data-img="{{ url_for('static', filename='images/image_15f964.jpg') }}">Size L</button>
                         {% endif %}
                         
                     </div>
@@ -257,6 +257,18 @@
             let addBtn = document.getElementById('add-btn-' + productId);
             addBtn.href = `/add/${productId}?size=${sizeName}&price=${exactPrice}`;
         }
+        
+        // Bind click events cho tất cả size buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.size-selector').forEach(function(selector) {
+                const productId = selector.getAttribute('data-product-id');
+                selector.querySelectorAll('.size-btn').forEach(function(btn) {
+                    btn.addEventListener('click', function() {
+                        changeSizeAndPrice(this, productId);
+                    });
+                });
+            });
+        });
 
         // HÀM MỞ VÀ ĐÓNG ẢNH PHÓNG TO KHI NHẤN CHUỘT VÀO HÌNH
         function openModal(imageSrc) {

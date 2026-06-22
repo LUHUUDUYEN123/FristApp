@@ -139,6 +139,12 @@
     <h1>TIỆM TRÀ NHÀ BỐI</h1>
     <p>Chào mừng bạn trở lại! 🐸</p>
 
+    {% if error %}
+    <div style="background-color: #ffebee; color: #c62828; padding: 15px; border-radius: 15px; margin-bottom: 20px; font-weight: 700; border-left: 4px solid #c62828;">
+        {{ error }}
+    </div>
+    {% endif %}
+
     <!-- Form gửi dữ liệu đăng nhập -->
     <form method="POST" action="/login">
         <input type="text"
