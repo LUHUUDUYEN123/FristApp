@@ -439,14 +439,13 @@
                             <div class="detail-label">📱 Số Điện Thoại</div>
                             <div class="detail-value phone">{{ order[3] }}</div>
                         </div>
+                        <div class="detail-item" style="grid-column: 1 / -1;">
+                            <div class="detail-label">📍 Địa Chỉ Giao Hàng</div>
+                            <div class="detail-value">{{ order[4] }}</div>
+                        </div>
                     </div>
 
-                    <div class="detail-item" style="grid-column: 1 / -1;">
-                        <div class="detail-label">📍 Địa Chỉ Giao Hàng</div>
-                        <div class="detail-value">{{ order[4] }}</div>
-                    </div>
-
-                    <div class="order-items" style="grid-column: 1 / -1;">
+                    <div class="order-items">
                         <div class="item-header">🛍️ SẢN PHẨM</div>
                         <div class="item-row">
                             <span class="item-name">{{ order[5] }}</span>
@@ -457,7 +456,7 @@
                         </div>
                     </div>
 
-                    <div class="order-times" style="grid-column: 1 / -1;">
+                    <div class="order-times">
                         <div class="time-item">
                             <div class="time-label">⏰ THỜI GIAN ĐẶT</div>
                             <div class="time-value">{{ order[8] if order[8] else "N/A" }}</div>
@@ -470,7 +469,7 @@
                         {% endif %}
                     </div>
 
-                    <div class="order-actions" style="grid-column: 1 / -1;">
+                    <div class="order-actions">
                         <a href="/order-detail/{{ order[0] }}" class="btn btn-view">
                             <i class="fa-solid fa-eye"></i> Chi Tiết
                         </a>
