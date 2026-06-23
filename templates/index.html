@@ -73,9 +73,9 @@
         .product-card { background: var(--white); border-radius: 25px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.06); transition: all 0.3s ease; display: flex; flex-direction: column; border: 2px solid transparent; }
         .product-card:hover { transform: translateY(-10px); border: 2px solid var(--accent-yellow); box-shadow: 0 15px 30px rgba(255, 202, 40, 0.2); }
         
-        .img-container { width: 100%; height: 230px; overflow: hidden; background-color: #ffebee; display: flex; justify-content: center; align-items: center; }
-        .product-img { width: 100%; height: 100%; object-fit: cover; cursor: pointer; transition: opacity 0.3s ease-in-out; }
-        .product-img:hover { opacity: 0.8; }
+        .img-container { width: 100%; height: 230px; overflow: hidden; background: linear-gradient(135deg, #f0f8f5 0%, #e8f5e9 100%); display: flex; justify-content: center; align-items: center; position: relative; }
+        .product-img { width: 100%; height: 100%; object-fit: cover; cursor: pointer; transition: opacity 0.3s ease-in-out, transform 0.3s ease; }
+        .product-img:hover { opacity: 0.85; transform: scale(1.05); }
 
         .product-info { padding: 20px; display: flex; flex-direction: column; flex-grow: 1; align-items: center; text-align: center; }
         .product-category { font-size: 13px; color: var(--primary-dark); background-color: #e8f5e9; padding: 5px 12px; border-radius: 15px; margin-bottom: 10px; font-weight: 800; }
@@ -83,14 +83,15 @@
         
         /* CSS Thanh chọn Size */
         .size-selector { display: flex; justify-content: center; gap: 5px; margin-bottom: 15px; width: 100%; flex-wrap: wrap; }
-        .size-btn { padding: 6px 10px; font-size: 13px; font-weight: 800; font-family: 'Nunito', sans-serif; border: 2px solid #eee; background: white; border-radius: 12px; cursor: pointer; transition: all 0.2s; color: #7f8c8d; }
-        .size-btn:hover { border-color: var(--primary); color: var(--primary); }
-        .size-btn.active { border-color: var(--primary); background: var(--primary); color: white; transform: scale(1.05); }
+        .size-btn { padding: 8px 12px; font-size: 13px; font-weight: 800; font-family: 'Nunito', sans-serif; border: 2px solid #e0e0e0; background: white; border-radius: 12px; cursor: pointer; transition: all 0.2s ease; color: #7f8c8d; }
+        .size-btn:hover { border-color: var(--primary); color: var(--primary); background: #f0f8f5; }
+        .size-btn.active { border-color: var(--primary); background: var(--primary); color: white; transform: scale(1.05); box-shadow: 0 4px 12px rgba(76,175,80,0.3); }
 
-        .product-price { font-size: 22px; color: var(--accent-pink); font-weight: 900; margin-bottom: 20px; margin-top: auto; transition: color 0.3s; }
+        .product-price { font-size: 24px; color: var(--accent-pink); font-weight: 900; margin-bottom: 20px; margin-top: auto; transition: all 0.3s ease; }
         
-        .btn-add-cart { width: 100%; padding: 12px; background-color: var(--primary); color: white; border: none; border-radius: 20px; font-size: 16px; font-weight: 900; cursor: pointer; transition: all 0.3s; text-decoration: none; display: block; }
-        .btn-add-cart:hover { background-color: var(--accent-yellow); color: var(--text-dark); transform: scale(1.05); }
+        .btn-add-cart { width: 100%; padding: 14px; background-color: var(--primary); color: white; border: none; border-radius: 20px; font-size: 16px; font-weight: 900; cursor: pointer; transition: all 0.3s ease; text-decoration: none; display: block; box-shadow: 0 4px 12px rgba(76,175,80,0.2); }
+        .btn-add-cart:hover { background-color: var(--accent-yellow); color: var(--text-dark); transform: translateY(-2px); box-shadow: 0 6px 16px rgba(76,175,80,0.3); }
+        .btn-add-cart:active { transform: translateY(0); }
 
         /* --- FOOTER --- */
         footer { background-color: var(--primary); color: white; text-align: center; padding: 40px 20px; margin-top: 80px; border-top-left-radius: 40px; border-top-right-radius: 40px; }
@@ -152,14 +153,49 @@
     <div class="container" id="menu">
         <h2 class="section-title">THỰC ĐƠN HÔM NAY</h2>
         
+        <!-- BỘ LỌC DANH MỤC -->
+        <div style="text-align: center; margin-bottom: 40px; display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
+            <button class="category-filter active" data-category="all">✨ Tất Cả</button>
+            <button class="category-filter" data-category="Trà">🍃 Trà Truyền</button>
+            <button class="category-filter" data-category="Trà trái cây">🍓 Trà Trái Cây</button>
+            <button class="category-filter" data-category="Trà sữa">🥛 Trà Sữa</button>
+            <button class="category-filter" data-category="Latte">☕ Latte</button>
+            <button class="category-filter" data-category="Sữa chua">🍨 Sữa Chua</button>
+            <button class="category-filter" data-category="Đá bào">🍧 Đá Bào</button>
+        </div>
+
+        <style>
+            .category-filter {
+                padding: 10px 25px; background: white; border: 2px solid #e0e0e0; border-radius: 25px;
+                font-size: 16px; font-weight: 800; cursor: pointer; transition: all 0.3s; color: var(--text-dark);
+                box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+            }
+            .category-filter:hover { border-color: var(--primary); color: var(--primary); }
+            .category-filter.active { background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 6px 15px rgba(76,175,80,0.3); }
+            .product-card.hidden { display: none !important; }
+        </style>
+
         <div class="product-grid">
             {% for p in products %}
-            <div class="product-card">
+            <div class="product-card" data-category="{{ p[3] }}">
                 
-                <div class="img-container">
+                <div class="img-container" style="position: relative; background: linear-gradient(135deg, #f0f8f5 0%, #e8f5e9 100%);">
+                    <!-- Spinner loading -->
+                    <div class="img-spinner" style="position: absolute; width: 50px; height: 50px; border: 4px solid #ddd; border-top: 4px solid var(--primary); border-radius: 50%; animation: spin 1s linear infinite; top: 50%; left: 50%; transform: translate(-50%, -50%);"></div>
+                    
                     <img src="{{ url_for('static', filename='images/' + p[4]) }}" 
                          id="img-{{ p[0] }}" 
-                         alt="{{ p[1] }}" class="product-img" onclick="openModal(this.src)" title="Bấm để xem ảnh lớn">
+                         alt="{{ p[1] }}" 
+                         class="product-img" 
+                         onclick="openModal(this.src)"
+                         onerror="handleImageError(this, '{{ p[3] }}')"
+                         onload="this.parentElement.querySelector('.img-spinner').style.display='none';"
+                         title="👆 Bấm để xem ảnh lớn"
+                         loading="lazy">
+                    
+                    <style>
+                        @keyframes spin { 0% { transform: translate(-50%, -50%) rotate(0deg); } 100% { transform: translate(-50%, -50%) rotate(360deg); } }
+                    </style>
                 </div>
                 
                 <div class="product-info">
@@ -170,28 +206,21 @@
                         
                         {% if p[3] == 'Trà sữa' or p[3] == 'Latte' %}
                             <button class="size-btn active" data-size="500ml" data-price="{{ p[2] }}" data-img="{{ url_for('static', filename='images/' + p[4]) }}">500ml</button>
-                            
                             <button class="size-btn" data-size="700ml" data-price="{{ p[2] + 7000 }}" data-img="{{ url_for('static', filename='images/image_15fd26.jpg') }}">700ml</button>
-                            
                             <button class="size-btn" data-size="1 Lít" data-price="{{ p[2] + 12000 }}" data-img="{{ url_for('static', filename='images/image_15f907.jpg') }}">1 Lít</button>
 
                         {% elif p[3] == 'Trà' or p[3] == 'Trà trái cây' %}
                             <button class="size-btn active" data-size="500ml" data-price="{{ p[2] }}" data-img="{{ url_for('static', filename='images/' + p[4]) }}">500ml</button>
-                            
                             <button class="size-btn" data-size="700ml" data-price="{{ p[2] + 5000 }}" data-img="{{ url_for('static', filename='images/image_15f9a0.jpg') }}">700ml</button>
-                            
                             <button class="size-btn" data-size="1 Lít" data-price="{{ p[2] + 10000 }}" data-img="{{ url_for('static', filename='images/image_15f95e.jpg') }}">1 Lít</button>
-                            
                             <button class="size-btn" data-size="1.2 Lít" data-price="{{ p[2] + 15000 }}" data-img="{{ url_for('static', filename='images/image_15f8e8.jpg') }}">1.2 Lít</button>
 
                         {% elif p[3] == 'Ăn vặt' %}
                             <button class="size-btn active" data-size="Phần Vừa" data-price="{{ p[2] }}" data-img="{{ url_for('static', filename='images/' + p[4]) }}">Phần Vừa</button>
-                            
                             <button class="size-btn" data-size="Phần Lớn" data-price="{{ p[2] + 20000 }}" data-img="{{ url_for('static', filename='images/image_16e203.jpg') }}">Phần Lớn</button>
 
                         {% else %}
                             <button class="size-btn active" data-size="Size M" data-price="{{ p[2] }}" data-img="{{ url_for('static', filename='images/' + p[4]) }}">Size M</button>
-                            
                             <button class="size-btn" data-size="Size L" data-price="{{ p[2] + 5000 }}" data-img="{{ url_for('static', filename='images/image_15f964.jpg') }}">Size L</button>
                         {% endif %}
                         
@@ -202,11 +231,11 @@
                     </div>
                     
                     {% if p[3] == 'Ăn vặt' %}
-                        <a href="/add/{{ p[0] }}?size=Phần Vừa&price={{ p[2] }}" id="add-btn-{{ p[0] }}" class="btn-add-cart">Thêm vào giỏ</a>
+                        <a href="/add/{{ p[0] }}?size=Phần Vừa&price={{ p[2] }}" id="add-btn-{{ p[0] }}" class="btn-add-cart">🛒 Thêm vào giỏ</a>
                     {% elif p[3] == 'Sữa chua' or p[3] == 'Đá bào' %}
-                        <a href="/add/{{ p[0] }}?size=Size M&price={{ p[2] }}" id="add-btn-{{ p[0] }}" class="btn-add-cart">Thêm vào giỏ</a>
+                        <a href="/add/{{ p[0] }}?size=Size M&price={{ p[2] }}" id="add-btn-{{ p[0] }}" class="btn-add-cart">🛒 Thêm vào giỏ</a>
                     {% else %}
-                        <a href="/add/{{ p[0] }}?size=500ml&price={{ p[2] }}" id="add-btn-{{ p[0] }}" class="btn-add-cart">Thêm vào giỏ</a>
+                        <a href="/add/{{ p[0] }}?size=500ml&price={{ p[2] }}" id="add-btn-{{ p[0] }}" class="btn-add-cart">🛒 Thêm vào giỏ</a>
                     {% endif %}
 
                 </div>
@@ -227,20 +256,86 @@
     </div>
 
     <script>
-        // HÀM CLICK CHỌN SIZE: THAY ĐỔI ẢNH, GIÁ BÁN, VÀ LINK ĐẶT HÀNG
+        // ===== HÀM LỌC DANH MỤC =====
+        document.addEventListener('DOMContentLoaded', function() {
+            const filterButtons = document.querySelectorAll('.category-filter');
+            const productCards = document.querySelectorAll('[data-category]');
+
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const selectedCategory = this.getAttribute('data-category');
+                    
+                    // Xóa active từ tất cả nút
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+
+                    // Lọc sản phẩm
+                    productCards.forEach(card => {
+                        const cardCategory = card.getAttribute('data-category');
+                        if (selectedCategory === 'all' || cardCategory === selectedCategory) {
+                            card.classList.remove('hidden');
+                            card.style.animation = 'fadeIn 0.3s ease';
+                        } else {
+                            card.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+        });
+
+        // ===== HÀM XỬ LÝ LỖI ẢNH =====
+        function handleImageError(img, category) {
+            // Tạo ảnh placeholder với gradient và text
+            const placeholders = {
+                'Trà': '🍵',
+                'Trà trái cây': '🍓',
+                'Trà sữa': '🥛',
+                'Latte': '☕',
+                'Sữa chua': '🍨',
+                'Đá bào': '🍧',
+                'Ăn vặt': '🍪'
+            };
+            
+            // Tạo canvas placeholder
+            const canvas = document.createElement('canvas');
+            canvas.width = 300;
+            canvas.height = 300;
+            const ctx = canvas.getContext('2d');
+            
+            // Vẽ background gradient
+            const gradient = ctx.createLinearGradient(0, 0, 300, 300);
+            gradient.addColorStop(0, '#e8f5e9');
+            gradient.addColorStop(1, '#c8e6c9');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, 300, 300);
+            
+            // Vẽ icon và text
+            ctx.fillStyle = '#4CAF50';
+            ctx.font = 'bold 80px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(placeholders[category] || '🍵', 150, 100);
+            
+            ctx.font = 'bold 16px Arial';
+            ctx.fillStyle = '#666';
+            ctx.fillText('Hình ảnh không tìm thấy', 150, 250);
+            
+            img.src = canvas.toDataURL();
+            img.style.objectFit = 'contain';
+            img.parentElement.querySelector('.img-spinner').style.display = 'none';
+        }
+
+        // ===== HÀM THAY ĐỔI SIZE VÀ GIÁ =====
         function changeSizeAndPrice(btnElement, productId) {
-            // 1. Thay đổi trạng thái màu sắc của nút kích hoạt
             let container = btnElement.parentElement;
             let buttons = container.querySelectorAll('.size-btn');
             buttons.forEach(btn => btn.classList.remove('active'));
             btnElement.classList.add('active');
 
-            // 2. Đọc trực tiếp các giá trị tùy chỉnh từ thẻ HTML vừa bấm
             let exactPrice = parseInt(btnElement.getAttribute('data-price')); 
             let newImgSrc = btnElement.getAttribute('data-img'); 
             let sizeName = btnElement.getAttribute('data-size'); 
 
-            // 3. Đổi hình ảnh sản phẩm tương ứng với size đã chọn (Có hiệu ứng mờ nhẹ khi đổi)
             let imgEl = document.getElementById('img-' + productId);
             imgEl.style.opacity = 0.4;
             setTimeout(() => {
@@ -248,13 +343,11 @@
                 imgEl.style.opacity = 1;
             }, 120);
 
-            // 4. Cập nhật lại số tiền hiển thị trên màn hình
             let priceEl = document.getElementById('price-' + productId);
             priceEl.innerHTML = exactPrice.toLocaleString('vi-VN') + 'đ';
             priceEl.style.color = '#FFCA28';
             setTimeout(() => { priceEl.style.color = 'var(--accent-pink)'; }, 300);
 
-            // 5. Đồng bộ cấu trúc đường dẫn mới gửi về file app.py để bỏ vào giỏ hàng
             let addBtn = document.getElementById('add-btn-' + productId);
             addBtn.href = `/add/${productId}?size=${sizeName}&price=${exactPrice}`;
         }
@@ -271,7 +364,7 @@
             });
         });
 
-        // HÀM MỞ VÀ ĐÓNG ẢNH PHÓNG TO KHI NHẤN CHUỘT VÀO HÌNH
+        // ===== HÀM MỞ VÀ ĐÓNG ẢNH PHÓNG TO =====
         function openModal(imageSrc) {
             var modal = document.getElementById("myImageModal");
             var expandedImg = document.getElementById("expandedImg");
@@ -285,6 +378,16 @@
             modal.style.display = "none";
             document.body.style.overflow = "auto";
         }
+
+        // ===== THÊM HIỆU ỨNG FADE IN =====
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(10px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+        `;
+        document.head.appendChild(style);
     </script>
 
 </body>
