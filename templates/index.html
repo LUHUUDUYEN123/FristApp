@@ -202,26 +202,26 @@
                     <span class="product-category">{{ p[3] }}</span>
                     <h3 class="product-title">{{ p[1] }}</h3>
                     
-                    <div class="size-selector" data-product-id="{{ p[0] }}">
+                    <div class="size-selector" data-product-id="{{ p[0] }}" data-category="{{ p[3] }}">
                         
                         {% if p[3] == 'Trà sữa' or p[3] == 'Latte' %}
-                            <button class="size-btn active" data-size="500ml" data-price="{{ p[2] }}" data-img="{{ url_for('static', filename='images/' + p[4]) }}">500ml</button>
-                            <button class="size-btn" data-size="700ml" data-price="{{ p[2] + 7000 }}" data-img="{{ url_for('static', filename='images/image_15fd26.jpg') }}">700ml</button>
-                            <button class="size-btn" data-size="1 Lít" data-price="{{ p[2] + 12000 }}" data-img="{{ url_for('static', filename='images/image_15f907.jpg') }}">1 Lít</button>
+                            <button class="size-btn active" data-size="500ml" data-price="{{ p[2] }}">500ml</button>
+                            <button class="size-btn" data-size="700ml" data-price="{{ p[2] + 7000 }}">700ml</button>
+                            <button class="size-btn" data-size="1 Lít" data-price="{{ p[2] + 12000 }}">1 Lít</button>
 
                         {% elif p[3] == 'Trà' or p[3] == 'Trà trái cây' %}
-                            <button class="size-btn active" data-size="500ml" data-price="{{ p[2] }}" data-img="{{ url_for('static', filename='images/' + p[4]) }}">500ml</button>
-                            <button class="size-btn" data-size="700ml" data-price="{{ p[2] + 5000 }}" data-img="{{ url_for('static', filename='images/image_15f9a0.jpg') }}">700ml</button>
-                            <button class="size-btn" data-size="1 Lít" data-price="{{ p[2] + 10000 }}" data-img="{{ url_for('static', filename='images/image_15f95e.jpg') }}">1 Lít</button>
-                            <button class="size-btn" data-size="1.2 Lít" data-price="{{ p[2] + 15000 }}" data-img="{{ url_for('static', filename='images/image_15f8e8.jpg') }}">1.2 Lít</button>
+                            <button class="size-btn active" data-size="500ml" data-price="{{ p[2] }}">500ml</button>
+                            <button class="size-btn" data-size="700ml" data-price="{{ p[2] + 5000 }}">700ml</button>
+                            <button class="size-btn" data-size="1 Lít" data-price="{{ p[2] + 10000 }}">1 Lít</button>
+                            <button class="size-btn" data-size="1.2 Lít" data-price="{{ p[2] + 15000 }}">1.2 Lít</button>
 
                         {% elif p[3] == 'Ăn vặt' %}
-                            <button class="size-btn active" data-size="Phần Vừa" data-price="{{ p[2] }}" data-img="{{ url_for('static', filename='images/' + p[4]) }}">Phần Vừa</button>
-                            <button class="size-btn" data-size="Phần Lớn" data-price="{{ p[2] + 20000 }}" data-img="{{ url_for('static', filename='images/image_16e203.jpg') }}">Phần Lớn</button>
+                            <button class="size-btn active" data-size="Phần Vừa" data-price="{{ p[2] }}">Phần Vừa</button>
+                            <button class="size-btn" data-size="Phần Lớn" data-price="{{ p[2] + 20000 }}">Phần Lớn</button>
 
                         {% else %}
-                            <button class="size-btn active" data-size="Size M" data-price="{{ p[2] }}" data-img="{{ url_for('static', filename='images/' + p[4]) }}">Size M</button>
-                            <button class="size-btn" data-size="Size L" data-price="{{ p[2] + 5000 }}" data-img="{{ url_for('static', filename='images/image_15f964.jpg') }}">Size L</button>
+                            <button class="size-btn active" data-size="Size M" data-price="{{ p[2] }}">Size M</button>
+                            <button class="size-btn" data-size="Size L" data-price="{{ p[2] + 5000 }}">Size L</button>
                         {% endif %}
                         
                     </div>
@@ -256,6 +256,17 @@
     </div>
 
     <script>
+        // ===== DANH SÁCH ẢNH VARIANT THEO CATEGORY =====
+        const imageVariants = {
+            'Trà': ['1.jpg', 'f3ba0446-f1fe-4c2a-bb6e-19c66c043eed.jpeg', '0d093360-9370-4c58-aafa-312a49e86c39.jpeg'],
+            'Trà trái cây': ['dau.jpeg', '5f498bbc-272c-4f55-beb0-407306911f86.jpeg', 'f3ba0446-f1fe-4c2a-bb6e-19c66c043eed.jpeg'],
+            'Trà sữa': ['trasua.jpg', '1.jpg', 'dau.jpeg'],
+            'Latte': ['matcha.jpeg', 'trasua.jpg', '1.jpg'],
+            'Sữa chua': ['5f498bbc-272c-4f55-beb0-407306911f86.jpeg', 'dau.jpeg', 'trasua.jpg'],
+            'Đá bào': ['0d093360-9370-4c58-aafa-312a49e86c39.jpeg', 'f3ba0446-f1fe-4c2a-bb6e-19c66c043eed.jpeg', 'dau.jpeg'],
+            'Ăn vặt': ['image_16e203.jpg', '1.jpg', 'trasua.jpg']
+        };
+
         // ===== HÀM LỌC DANH MỤC =====
         document.addEventListener('DOMContentLoaded', function() {
             const filterButtons = document.querySelectorAll('.category-filter');
@@ -326,16 +337,24 @@
         }
 
         // ===== HÀM THAY ĐỔI SIZE VÀ GIÁ =====
-        function changeSizeAndPrice(btnElement, productId) {
+        function changeSizeAndPrice(btnElement, productId, category) {
             let container = btnElement.parentElement;
             let buttons = container.querySelectorAll('.size-btn');
+            
+            // Xóa active từ tất cả
             buttons.forEach(btn => btn.classList.remove('active'));
             btnElement.classList.add('active');
 
+            // Lấy giá từ nút
             let exactPrice = parseInt(btnElement.getAttribute('data-price')); 
-            let newImgSrc = btnElement.getAttribute('data-img'); 
-            let sizeName = btnElement.getAttribute('data-size'); 
+            let sizeName = btnElement.getAttribute('data-size');
+            
+            // Chọn ảnh variant dựa trên index của size
+            let sizeIndex = Array.from(buttons).indexOf(btnElement);
+            let variants = imageVariants[category] || imageVariants['Trà'];
+            let newImgSrc = '/static/images/' + (variants[sizeIndex % variants.length] || variants[0]);
 
+            // Đổi hình ảnh
             let imgEl = document.getElementById('img-' + productId);
             imgEl.style.opacity = 0.4;
             setTimeout(() => {
@@ -343,11 +362,13 @@
                 imgEl.style.opacity = 1;
             }, 120);
 
+            // Cập nhật giá
             let priceEl = document.getElementById('price-' + productId);
             priceEl.innerHTML = exactPrice.toLocaleString('vi-VN') + 'đ';
             priceEl.style.color = '#FFCA28';
             setTimeout(() => { priceEl.style.color = 'var(--accent-pink)'; }, 300);
 
+            // Cập nhật link
             let addBtn = document.getElementById('add-btn-' + productId);
             addBtn.href = `/add/${productId}?size=${sizeName}&price=${exactPrice}`;
         }
@@ -356,9 +377,11 @@
         document.addEventListener('DOMContentLoaded', function() {
             document.querySelectorAll('.size-selector').forEach(function(selector) {
                 const productId = selector.getAttribute('data-product-id');
+                const category = selector.getAttribute('data-category') || 'Trà';
+                
                 selector.querySelectorAll('.size-btn').forEach(function(btn) {
                     btn.addEventListener('click', function() {
-                        changeSizeAndPrice(this, productId);
+                        changeSizeAndPrice(this, productId, category);
                     });
                 });
             });
