@@ -334,7 +334,7 @@ def my_orders():
     orders = c.fetchall()
     conn.close()
     
-    return render_template("user_orders.html", orders=orders)
+    return render_template("user_orders.html", orders=orders, session=session)
 
 
 @app.route("/order-detail/<int:order_id>")
@@ -354,7 +354,7 @@ def order_detail(order_id):
     if not order:
         return "<h1>❌ Không tìm thấy đơn hàng</h1><a href='/my-orders'>Quay lại</a>"
     
-    return render_template("order_detail.html", order=order)
+    return render_template("order_detail.html", order=order, session=session)
 
 
 @app.route("/cancel-order/<int:order_id>")
@@ -427,80 +427,6 @@ def delete_order(order_id):
     conn.close()
     return redirect("/admin")
 
-
-# ==========================
-# KHÁCH HÀNG XEM ĐƠN HÀNG
-# ==========================
-@app.route("/my-orders")
-def my_orders():
-    if "user" not in session: 
-        return redirect("/login")
-    
-    conn = sqlite3.connect("database.db")
-    c = conn.cursor()
-    c.execute("""
-    SELECT id, username, full_name, phone, address, product_name, price, status, created_at, completed_at
-    FROM orders WHERE username = ? ORDER BY id DESC
-    """, (session["user"],))
-    orders = c.fetchall()
-    conn.close()
-    
-    # Group orders by order ID and creation time
-    order_groups = {}
-    for order in orders:
-        order_id = order[0]
-        if order_id not in order_groups:
-            order_groups[order_id] = {
-                'id': order[0],
-                'username': order[1],
-                'full_name': order[2],
-                'phone': order[3],
-                'address': order[4],
-                'items': [],
-                'status': order[7],
-                'created_at': order[8],
-                'completed_at': order[9]
-            }
-        order_groups[order_id]['items'].append({
-            'product_name': order[5],
-            'price': order[6]
-        })
-    
-    orders_list = list(order_groups.values())
-    
-    return render_template("my_orders.html", orders=orders_list)
-
-
-@app.route("/cancel-order/<int:order_id>")
-def cancel_order(order_id):
-    if "user" not in session: 
-        return redirect("/login")
-    
-    conn = sqlite3.connect("database.db")
-    c = conn.cursor()
-    
-    # Kiểm tra xem đơn hàng có thuộc về user hiện tại và có thể hủy không
-    c.execute("SELECT username, status FROM orders WHERE id = ? LIMIT 1", (order_id,))
-    order = c.fetchone()
-    conn.close()
-    
-    if not order:
-        return redirect("/my-orders")
-    
-    if order[0] != session["user"]:
-        return redirect("/my-orders")
-    
-    if order[1] != "Chờ xử lý":
-        return redirect("/my-orders")
-    
-    # Xóa tất cả các item của đơn hàng này
-    conn = sqlite3.connect("database.db")
-    c = conn.cursor()
-    c.execute("DELETE FROM orders WHERE id = ?", (order_id,))
-    conn.commit()
-    conn.close()
-    
-    return redirect("/my-orders")
 
 if __name__ == "__main__":
     app.run(debug=True)
