@@ -110,6 +110,7 @@
         <a href="/" class="logo"><i class="fa-solid fa-frog"></i> NHÀ BỐI</a>
         <div class="nav-links">
             <a href="/">Trang chủ</a> <a href="#about">Giới thiệu</a> <a href="#menu">Thực đơn</a>
+            {% if session.get('user') %} <a href="/my-orders" style="color: var(--primary);">📦 Đơn hàng của tôi</a> {% endif %}
             {% if session.get('user') == 'admin' %} <a href="/admin" style="color: var(--accent-pink);">Quản trị</a> {% endif %}
         </div>
         <div class="user-actions">
