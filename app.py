@@ -61,46 +61,51 @@ def init_db():
     )
     """)
 
-    # Nạp 32 món ăn kèm TÊN ẢNH CHÍNH XÁC
+    # Nạp danh sách sản phẩm với ảnh thực tế
     products = [
+        # === TRÀ TRUYỀN ===
         ("Trà tắc", 10000, "Trà", "1.jpg"), 
-        ("Trà chanh", 10000, "Trà", "image_15f921.jpg"), 
-        ("Trà tắc thái xanh", 10000, "Trà", "image_15f964.jpg"),
-        ("Trà chanh thái xanh", 15000, "Trà", "image_15f964.jpg"), 
-        ("Trà tắc xí muội", 15000, "Trà", "image_15f8cA7.jpg"), 
-        ("Trà me hạt dẻo", 20000, "Trà", "image_15f8c7.jpg"),
+        ("Trà chanh", 11000, "Trà", "1.jpg"), 
+        ("Trà tắc thái xanh", 12000, "Trà", "1.jpg"),
+        ("Trà chanh dây", 13000, "Trà", "1.jpg"), 
+        ("Trà me hạt dẻo", 14000, "Trà", "1.jpg"),
 
-        ("Trà chanh dây", 15000, "Trà trái cây", "image_15f9a0.jpg"), 
-        ("Trà việt quất", 15000, "Trà trái cây", "image_15f95e.jpg"),
-        ("Trà ổi hồng", 18000, "Trà trái cây", "image_15f8e8.jpg"), 
-        ("Trà dâu tằm", 15000, "Trà trái cây", "image_15f95e.jpg"),
-        ("Trà vải", 20000, "Trà trái cây", "image_15f8e8.jpg"), 
-        ("Trà đào", 15000, "Trà trái cây", "image_15f9a0.jpg"),
+        # === TRÀ TRÁI CÂY ===
+        ("Trà đào", 15000, "Trà trái cây", "dau.jpeg"), 
+        ("Trà việt quất", 15000, "Trà trái cây", "dau.jpeg"),
+        ("Trà ổi hồng", 16000, "Trà trái cây", "dau.jpeg"), 
+        ("Trà dâu tằm", 15000, "Trà trái cây", "dau.jpeg"),
+        ("Trà vải", 16000, "Trà trái cây", "dau.jpeg"),
 
-        ("Trà sữa truyền thống", 15000, "Trà sữa", "image_15f921.jpg"), 
-        ("Trà sữa thái xanh", 15000, "Trà sữa", "image_15f964.jpg"),
-        ("Trà sữa khoai môn", 18000, "Trà sữa", "image_15f907.jpg"), 
-        ("Trà sữa gạo rang", 18000, "Trà sữa", "image_15fd26.jpg"),
-        ("Trà sữa socola", 25000, "Trà sữa", "image_15f907.jpg"), 
-        ("Trà sữa caramel", 25000, "Trà sữa", "image_15fd26.jpg"), 
-        ("Trà sữa phô mai", 30000, "Trà sữa", "image_15f907.jpg"),
+        # === TRÀ SỮA ===
+        ("Trà sữa truyền thống", 18000, "Trà sữa", "trasua.jpg"), 
+        ("Trà sữa thái xanh", 18000, "Trà sữa", "trasua.jpg"),
+        ("Trà sữa khoai môn", 20000, "Trà sữa", "trasua.jpg"), 
+        ("Trà sữa gạo rang", 20000, "Trà sữa", "trasua.jpg"),
+        ("Trà sữa socola", 22000, "Trà sữa", "trasua.jpg"), 
+        ("Trà sữa caramel", 22000, "Trà sữa", "trasua.jpg"), 
+        ("Trà sữa phô mai", 25000, "Trà sữa", "trasua.jpg"),
 
-        ("Matcha Latte", 18000, "Latte", "matcha.jpeg"), 
-        ("Khoai môn Latte", 18000, "Latte", "image_15f984.jpg"), 
-        ("Cacao Latte", 18000, "Latte", "image_15f984.jpg"),
-        ("Matcha đào", 19000, "Latte", "image_15f8e2.jpg"), 
-        ("Coco Matcha", 28000, "Latte", "image_15f984.jpg"),
+        # === LATTE & MATCHA ===
+        ("Matcha Latte", 20000, "Latte", "matcha.jpeg"), 
+        ("Khoai môn Latte", 20000, "Latte", "matcha.jpeg"), 
+        ("Cacao Latte", 20000, "Latte", "matcha.jpeg"),
+        ("Matcha đào", 21000, "Latte", "matcha.jpeg"), 
+        ("Coco Matcha", 25000, "Latte", "matcha.jpeg"),
 
-        ("Sữa chua nguyên vị", 23000, "Sữa chua", "image_15f964.jpg"), 
-        ("Sữa chua việt quất", 25000, "Sữa chua", "image_15f95e.jpg"), 
-        ("Sữa chua đào", 25000, "Sữa chua", "image_15f9a0.jpg"),
+        # === SỮA CHUA ===
+        ("Sữa chua nguyên vị", 23000, "Sữa chua", "5f498bbc-272c-4f55-beb0-407306911f86.jpeg"), 
+        ("Sữa chua việt quất", 24000, "Sữa chua", "5f498bbc-272c-4f55-beb0-407306911f86.jpeg"), 
+        ("Sữa chua đào", 24000, "Sữa chua", "5f498bbc-272c-4f55-beb0-407306911f86.jpeg"),
 
-        ("Đá bào sữa", 10000, "Đá bào", "image_15fd26.jpg"), 
-        ("Milo dầm", 20000, "Đá bào", "image_15fd26.jpg"),
+        # === ĐÁ BÀO ===
+        ("Đá bào sữa", 12000, "Đá bào", "0d093360-9370-4c58-aafa-312a49e86c39.jpeg"), 
+        ("Milo dầm", 15000, "Đá bào", "0d093360-9370-4c58-aafa-312a49e86c39.jpeg"),
 
-        ("Bánh tráng trộn", 15000, "Ăn vặt", "image_16e203.jpg"), 
-        ("Khô gà", 90000, "Ăn vặt", "image_16e203.jpg"), 
-        ("Tóp mỡ", 39000, "Ăn vặt", "image_16e203.jpg")
+        # === ĂN VẶT ===
+        ("Bánh tráng trộn", 18000, "Ăn vặt", "image_16e203.jpg"), 
+        ("Khô gà", 85000, "Ăn vặt", "image_16e203.jpg"), 
+        ("Tóp mỡ", 35000, "Ăn vặt", "image_16e203.jpg")
     ]
     c.executemany("INSERT INTO products(name,price,category,image) VALUES (?,?,?,?)", products)
 
