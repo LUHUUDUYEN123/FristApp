@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đặt hàng thành công - TIỆM TRÀ NHÀ BỐI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #4CAF50;
+            --primary-dark: #388E3C;
+            --accent-yellow: #FFCA28;
+            --accent-pink: #FF8A80;
+            --bg-light: #F4FAF4;
+            --text-dark: #2C3E50;
+            --white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(135deg, #e8f5e9 0%, #F4FAF4 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .success-container {
+            background: var(--white);
+            border-radius: 40px;
+            padding: 60px 40px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(76, 175, 80, 0.15);
+            text-align: center;
+            animation: slideIn 0.6s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Icon thành công */
+        .success-icon {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 30px;
+            background: linear-gradient(135deg, #4CAF50 0%, #388E3C 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+            animation: bounce 0.6s ease-out;
+        }
+
+        @keyframes bounce {
+            0% {
+                transform: scale(0);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        h1 {
+            font-size: 32px;
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-weight: 900;
+        }
+
+        .subtitle {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 30px;
+            font-weight: 600;
+            line-height: 1.6;
+        }
+
+        /* Thông tin đơn hàng */
+        .order-info {
+            background: #f9f9f9;
+            border-radius: 25px;
+            padding: 25px;
+            margin: 30px 0;
+            text-align: left;
+            border-left: 4px solid var(--primary);
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+            font-size: 16px;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-value {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .order-id {
+            font-size: 24px;
+            color: var(--primary);
+            font-weight: 900;
+        }
+
+        .total-price {
+            font-size: 28px;
+            color: var(--accent-pink);
+            font-weight: 900;
+        }
+
+        /* Bước xử lý đơn hàng */
+        .steps {
+            margin: 35px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .step {
+            flex: 1;
+            text-align: center;
+        }
+
+        .step-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--bg-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            font-size: 24px;
+            color: var(--primary);
+            font-weight: 900;
+        }
+
+        .step-text {
+            font-size: 13px;
+            color: #666;
+            font-weight: 700;
+        }
+
+        .step-connector {
+            flex: 0.3;
+            height: 2px;
+            background: var(--primary);
+            margin: 0 5px;
+            margin-bottom: 35px;
+        }
+
+        /* Nút action */
+        .button-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 35px;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            font-size: 16px;
+            font-weight: 800;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Nunito', sans-serif;
+            text-decoration: none;
+            display: inline-block;
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(76, 175, 80, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--accent-yellow);
+            color: var(--text-dark);
+            box-shadow: 0 5px 15px rgba(255, 202, 40, 0.2);
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 202, 40, 0.3);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        /* Note */
+        .note {
+            background: #fff3e0;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 25px 0;
+            border-left: 4px solid #ff9800;
+            text-align: left;
+            font-weight: 600;
+            color: #d35400;
+        }
+
+        .note-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        .note-content {
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        header {
+            background: var(--white);
+            padding: 15px 5%;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.1);
+            border-bottom: 3px solid var(--primary);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 900;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Footer note */
+        .footer-note {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #eee;
+            font-size: 14px;
+            color: #999;
+            font-weight: 600;
+        }
+
+        /* Mobile responsive */
+        @media (max-width: 600px) {
+            .success-container {
+                padding: 40px 25px;
+            }
+
+            h1 {
+                font-size: 26px;
+            }
+
+            .steps {
+                flex-wrap: wrap;
+            }
+
+            .step-connector {
+                display: none;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .success-icon {
+                width: 100px;
+                height: 100px;
+                font-size: 50px;
+            }
+
+            .info-row {
+                flex-direction: column;
+                gap: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="/" class="logo"><i class="fa-solid fa-frog"></i> NHÀ BỐI</a>
+    </header>
+
+    <div class="success-container">
+        <!-- Icon thành công -->
+        <div class="success-icon">
+            <i class="fa-solid fa-check"></i>
+        </div>
+
+        <!-- Tiêu đề -->
+        <h1>Đặt Hàng Thành Công! 🎉</h1>
+        <p class="subtitle">
+            Cảm ơn {{ session.get('user', 'bạn') }} đã tin tưởng Tiệm Trà Nhà Bối!<br>
+            Đơn hàng của bạn đã được tiếp nhận.
+        </p>
+
+        <!-- Thông tin đơn hàng -->
+        <div class="order-info">
+            <div class="info-row">
+                <span class="info-label"><i class="fa-solid fa-receipt"></i> Mã Đơn Hàng:</span>
+                <span class="order-id">#{{ order_id }}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label"><i class="fa-solid fa-user"></i> Khách Hàng:</span>
+                <span class="info-value">{{ full_name }}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label"><i class="fa-solid fa-phone"></i> Số Điện Thoại:</span>
+                <span class="info-value">{{ phone }}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label"><i class="fa-solid fa-map-pin"></i> Địa Chỉ:</span>
+                <span class="info-value">{{ address }}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label"><i class="fa-solid fa-money-bill"></i> Tổng Tiền:</span>
+                <span class="total-price">{{ "{:,}".format(total) }}đ</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label"><i class="fa-solid fa-clock"></i> Thời Gian:</span>
+                <span class="info-value">{{ created_at }}</span>
+            </div>
+        </div>
+
+        <!-- Các bước xử lý -->
+        <div class="steps">
+            <div class="step">
+                <div class="step-icon">1</div>
+                <div class="step-text">Đã Nhận Đơn</div>
+            </div>
+            <div class="step-connector"></div>
+            <div class="step">
+                <div class="step-icon">2</div>
+                <div class="step-text">Đang Pha Chế</div>
+            </div>
+            <div class="step-connector"></div>
+            <div class="step">
+                <div class="step-icon">3</div>
+                <div class="step-text">Đang Giao</div>
+            </div>
+            <div class="step-connector"></div>
+            <div class="step">
+                <div class="step-icon">4</div>
+                <div class="step-text">Hoàn Tất</div>
+            </div>
+        </div>
+
+        <!-- Lưu ý -->
+        <div class="note">
+            <div class="note-title">
+                <i class="fa-solid fa-circle-info"></i>
+                Thông Tin Quan Trọng
+            </div>
+            <div class="note-content">
+                ✓ Tiệm sẽ liên hệ bạn trong vòng 15 phút để xác nhận đơn hàng.<br>
+                ✓ Thời gian giao hàng: 30-45 phút tính từ lúc pha chế.<br>
+                ✓ Hãy chuẩn bị sẵn tiền mặt nếu thanh toán COD.
+            </div>
+        </div>
+
+        <!-- Nút action -->
+        <div class="button-group">
+            <a href="/my-orders" class="btn btn-primary">
+                <i class="fa-solid fa-list"></i> Xem Đơn Hàng
+            </a>
+            <a href="/" class="btn btn-secondary">
+                <i class="fa-solid fa-home"></i> Trang Chủ
+            </a>
+        </div>
+
+        <div class="footer-note">
+            Bạn có thể quản lý đơn hàng trong tài khoản của mình.
+        </div>
+    </div>
+
+</body>
+</html>

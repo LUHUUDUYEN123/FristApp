@@ -286,19 +286,30 @@ def checkout():
         return "<h1>❌ Lỗi: Giỏ hàng trống!</h1><a href='/'>Về trang chủ</a>"
     
     now = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+    total = sum(item["price"] for item in cart)
 
     conn = sqlite3.connect("database.db")
     c = conn.cursor()
     try:
+        order_id = None
         for item in cart:
             c.execute("""
             INSERT INTO orders(username, full_name, phone, address, product_name, price, status, created_at)
             VALUES (?,?,?,?,?,?,?,?)
             """, (session["user"], full_name, phone, address, item["name"], item["price"], "Chờ xử lý", now))
+            if order_id is None:
+                order_id = c.lastrowid
         
         conn.commit()
         session["cart"] = []
-        return "<h1>✅ Đặt hàng thành công 🎉</h1><p>Cảm ơn bạn đã order, tiệm sẽ liên hệ bạn sớm nhất!</p><a href='/'>Quay về trang chủ</a>"
+        
+        return render_template("success.html", 
+                             order_id=order_id,
+                             full_name=full_name,
+                             phone=phone,
+                             address=address,
+                             total=total,
+                             created_at=now)
     except Exception as e:
         conn.rollback()
         return f"<h1>❌ Lỗi: Không thể lưu đơn hàng</h1><a href='/cart'>Thử lại</a>"
@@ -307,8 +318,75 @@ def checkout():
 
 
 # ==========================
-# ADMIN QUẢN LÝ ĐƠN HÀNG
+# USER ORDERS MANAGEMENT
 # ==========================
+@app.route("/my-orders")
+def my_orders():
+    if "user" not in session: 
+        return redirect("/login")
+    
+    conn = sqlite3.connect("database.db")
+    c = conn.cursor()
+    c.execute("""
+    SELECT id, username, full_name, phone, address, product_name, price, status, created_at, completed_at
+    FROM orders WHERE username = ? ORDER BY id DESC
+    """, (session["user"],))
+    orders = c.fetchall()
+    conn.close()
+    
+    return render_template("user_orders.html", orders=orders)
+
+
+@app.route("/order-detail/<int:order_id>")
+def order_detail(order_id):
+    if "user" not in session: 
+        return redirect("/login")
+    
+    conn = sqlite3.connect("database.db")
+    c = conn.cursor()
+    c.execute("""
+    SELECT id, username, full_name, phone, address, product_name, price, status, created_at, completed_at
+    FROM orders WHERE id = ? AND username = ?
+    """, (order_id, session["user"]))
+    order = c.fetchone()
+    conn.close()
+    
+    if not order:
+        return "<h1>❌ Không tìm thấy đơn hàng</h1><a href='/my-orders'>Quay lại</a>"
+    
+    return render_template("order_detail.html", order=order)
+
+
+@app.route("/cancel-order/<int:order_id>")
+def cancel_order(order_id):
+    if "user" not in session: 
+        return redirect("/login")
+    
+    conn = sqlite3.connect("database.db")
+    c = conn.cursor()
+    
+    # Kiểm tra đơn hàng thuộc user
+    c.execute("SELECT status FROM orders WHERE id = ? AND username = ?", (order_id, session["user"]))
+    result = c.fetchone()
+    
+    if not result:
+        conn.close()
+        return "<h1>❌ Không tìm thấy đơn hàng</h1><a href='/my-orders'>Quay lại</a>"
+    
+    # Nếu đơn hàng đã hoàn thành, không cho phép hủy
+    if result[0] == "Hoàn thành":
+        conn.close()
+        return "<h1>❌ Không thể hủy đơn hàng đã hoàn thành</h1><a href='/my-orders'>Quay lại</a>"
+    
+    # Hủy đơn hàng
+    try:
+        c.execute("UPDATE orders SET status = 'Đã hủy' WHERE id = ?", (order_id,))
+        conn.commit()
+        conn.close()
+        return redirect("/my-orders")
+    except:
+        conn.close()
+        return "<h1>❌ Lỗi hệ thống, vui lòng thử lại</h1><a href='/my-orders'>Quay lại</a>"
 @app.route("/admin")
 def admin():
     if "user" not in session: return redirect("/login")

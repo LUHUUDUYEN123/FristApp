@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi Tiết Đơn Hàng - TIỆM TRÀ NHÀ BỐI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #4CAF50;
+            --primary-dark: #388E3C;
+            --accent-yellow: #FFCA28;
+            --accent-pink: #FF8A80;
+            --bg-light: #F4FAF4;
+            --text-dark: #2C3E50;
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            margin: 0;
+            padding: 20px;
+        }
+
+        header {
+            background-color: var(--white);
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid var(--primary);
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 900;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-section {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .user-greeting {
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .logout-btn {
+            padding: 10px 20px;
+            background: #FF8A80;
+            color: white;
+            text-decoration: none;
+            border-radius: 20px;
+            font-weight: 800;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: #e57373;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        h1 {
+            color: var(--primary);
+            font-size: 32px;
+            font-weight: 900;
+            margin: 0;
+        }
+
+        .back-btn {
+            padding: 12px 25px;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 20px;
+            font-weight: 800;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        /* Main Card */
+        .detail-card {
+            background: var(--white);
+            border-radius: 25px;
+            padding: 35px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+            border-left: 5px solid var(--primary);
+        }
+
+        /* Header section */
+        .detail-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #eee;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .order-id-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .order-id {
+            font-size: 36px;
+            font-weight: 900;
+            color: var(--primary);
+        }
+
+        .order-status {
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: 800;
+            font-size: 14px;
+        }
+
+        .status-pending {
+            background: #FFF3E0;
+            color: #FF9800;
+        }
+
+        .status-completed {
+            background: #E8F5E9;
+            color: var(--primary-dark);
+        }
+
+        .status-cancelled {
+            background: #FFEBEE;
+            color: #C62828;
+        }
+
+        /* Info sections */
+        .info-section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 900;
+            color: var(--primary);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .info-item {
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 15px;
+            border-left: 3px solid var(--primary);
+        }
+
+        .info-label {
+            font-size: 12px;
+            color: #999;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .info-value {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-dark);
+            word-break: break-word;
+            line-height: 1.5;
+        }
+
+        .info-value.phone {
+            color: var(--primary);
+            font-family: monospace;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        /* Product section */
+        .product-section {
+            background: #f9f9f9;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .product-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .product-item:last-child {
+            border-bottom: none;
+        }
+
+        .product-name {
+            font-weight: 700;
+            font-size: 16px;
+            color: var(--text-dark);
+        }
+
+        .product-price {
+            font-weight: 900;
+            font-size: 18px;
+            color: var(--accent-pink);
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .timeline-item {
+            display: flex;
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .timeline-dot {
+            width: 16px;
+            height: 16px;
+            background: var(--primary);
+            border-radius: 50%;
+            margin-top: 5px;
+            margin-right: 20px;
+            flex-shrink: 0;
+            border: 3px solid var(--white);
+            box-shadow: 0 0 0 2px var(--primary);
+        }
+
+        .timeline-dot.inactive {
+            background: #ddd;
+            box-shadow: 0 0 0 2px #ddd;
+        }
+
+        .timeline-content {
+            flex: 1;
+            padding: 12px 15px;
+            background: #f9f9f9;
+            border-radius: 10px;
+        }
+
+        .timeline-label {
+            font-weight: 800;
+            color: var(--primary);
+            font-size: 14px;
+            margin-bottom: 3px;
+        }
+
+        .timeline-label.inactive {
+            color: #999;
+        }
+
+        .timeline-time {
+            font-size: 12px;
+            color: #999;
+            font-weight: 600;
+        }
+
+        /* Total section */
+        .total-section {
+            background: linear-gradient(135deg, #e8f5e9 0%, #f1f8f6 100%);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            text-align: right;
+            border: 2px solid var(--primary);
+        }
+
+        .total-label {
+            font-size: 14px;
+            color: #666;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .total-price {
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--accent-pink);
+        }
+
+        /* Action buttons */
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            flex: 1;
+            min-width: 150px;
+            padding: 14px 25px;
+            border: none;
+            border-radius: 15px;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+            text-decoration: none;
+            text-align: center;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background: #FFCDD2;
+            color: #C62828;
+        }
+
+        .btn-danger:hover {
+            background: #EF9A9A;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: var(--accent-yellow);
+            color: var(--text-dark);
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .detail-card {
+                padding: 20px;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 26px;
+            }
+
+            .order-id {
+                font-size: 28px;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .detail-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .order-id-section {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .timeline-item {
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="/" class="logo"><i class="fa-solid fa-frog"></i> NHÀ BỐI</a>
+        <div class="user-section">
+            <span class="user-greeting">👋 {{ session.get('user', 'Bạn') }}</span>
+            <a href="/logout" class="logout-btn">Thoát</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>Chi Tiết Đơn Hàng</h1>
+            <a href="/my-orders" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Quay Lại</a>
+        </div>
+
+        <div class="detail-card">
+            <!-- Header -->
+            <div class="detail-header">
+                <div class="order-id-section">
+                    <div class="order-id">#{{ order[0] }}</div>
+                    <div class="order-status {% if order[7] == 'Hoàn thành' %}status-completed{% elif order[7] == 'Đã hủy' %}status-cancelled{% else %}status-pending{% endif %}">
+                        {% if order[7] == 'Hoàn thành' %}
+                            ✔ Đã giao xong
+                        {% elif order[7] == 'Đã hủy' %}
+                            ✖ Đã hủy
+                        {% else %}
+                            ⏳ Chờ xử lý
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Customer Info -->
+            <div class="info-section">
+                <div class="section-title">
+                    <i class="fa-solid fa-user"></i>
+                    Thông Tin Khách Hàng
+                </div>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-label">Tên Khách Hàng</div>
+                        <div class="info-value">{{ order[2] }}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Số Điện Thoại</div>
+                        <div class="info-value phone">{{ order[3] }}</div>
+                    </div>
+                    <div class="info-item full-width">
+                        <div class="info-label">Địa Chỉ Giao Hàng</div>
+                        <div class="info-value">{{ order[4] }}</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Info -->
+            <div class="info-section">
+                <div class="section-title">
+                    <i class="fa-solid fa-mug-hot"></i>
+                    Sản Phẩm Đặt Hàng
+                </div>
+                <div class="product-section">
+                    <div class="product-item">
+                        <span class="product-name">{{ order[5] }}</span>
+                        <span class="product-price">{{ "{:,}".format(order[6]) }}đ</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Total -->
+            <div class="total-section">
+                <div class="total-label">Tổng Tiền Đơn Hàng</div>
+                <div class="total-price">{{ "{:,}".format(order[6]) }}đ</div>
+            </div>
+
+            <!-- Timeline -->
+            <div class="info-section">
+                <div class="section-title">
+                    <i class="fa-solid fa-timeline"></i>
+                    Quá Trình Xử Lý
+                </div>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-label">Đơn Hàng Được Tiếp Nhận</div>
+                            <div class="timeline-time">{{ order[8] if order[8] else "Đang chờ..." }}</div>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot {% if order[7] == 'Hoàn thành' %}{% else %}inactive{% endif %}"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-label {% if order[7] == 'Hoàn thành' %}{% else %}inactive{% endif %}">Đang Pha Chế & Giao Hàng</div>
+                            <div class="timeline-time">
+                                {% if order[7] == 'Hoàn thành' %}
+                                    Đã hoàn tất vào {{ order[9] }}
+                                {% else %}
+                                    Đang xử lý...
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            {% if order[7] not in ['Hoàn thành', 'Đã hủy'] %}
+            <div class="action-buttons">
+                <a href="/cancel-order/{{ order[0] }}" class="btn btn-danger" onclick="return confirm('Bạn chắc chắn muốn hủy đơn hàng này?')">
+                    <i class="fa-solid fa-ban"></i>
+                    Hủy Đơn Hàng
+                </a>
+                <a href="/" class="btn btn-secondary">
+                    <i class="fa-solid fa-home"></i>
+                    Trang Chủ
+                </a>
+            </div>
+            {% else %}
+            <div class="action-buttons">
+                <a href="/my-orders" class="btn btn-primary">
+                    <i class="fa-solid fa-list"></i>
+                    Quay Lại Danh Sách
+                </a>
+                <a href="/" class="btn btn-secondary">
+                    <i class="fa-solid fa-home"></i>
+                    Trang Chủ
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+</body>
+</html>
